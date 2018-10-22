@@ -116,6 +116,18 @@ class App extends Component {
     this.props.removeAllMessages()
   }
 
+/*
+  resetMessages = () => {
+    this.props.removeAllMessages()
+    if (this.props.preferences.welcomeMessage) {
+      this.props.setFirstMessage(this.props.preferences.welcomeMessage)
+    }
+    else{
+      this.props.setFirstMessage('Try again')
+    }
+  }
+*/
+
   render() {
     const {
       preferences,
@@ -158,6 +170,7 @@ class App extends Component {
         <Chat
           show={expanded}
           closeWebchat={this.toggleChat}
+          resetWebchat={this.resetMessages}
           preferences={preferences}
           containerMessagesStyle={containerMessagesStyle}
           containerStyle={containerStyle}
