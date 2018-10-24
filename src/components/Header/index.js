@@ -16,7 +16,7 @@ const Header = ({ closeWebchat, resetWebchat, preferences, logoStyle }) => (
     <div className="RecastAppHeader--title">{preferences.headerTitle}</div>
 
     <div className="RecastAppHeader--btn" onClick={ resetWebchat }>
-      <img src="./img/myReset2.png" />
+      <img className="myIcon" src="./img/myReset.png" />
     </div>
 
     <div className="RecastAppHeader--btn" onClick={closeWebchat}>
