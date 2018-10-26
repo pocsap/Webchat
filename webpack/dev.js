@@ -20,6 +20,20 @@ module.exports = {
     publicPath: '/dist/'
   },
 
+  devServer : {
+    port            : 8080,                         // ポートを指定
+    progress        : true,                         // 変換の進捗をコンソールに表示
+    inline          : true,                         // インライン/iframeモードの指定(通常インラインでいい)
+    clientLogLevel  : 'info',                       // バンドル作成に関するログのレベル(none, error, warning, info)
+    contentBase     : path.join(__dirname, '/'),    // サーバの基準パス(ドキュメントルート)
+    publicPath      : '/',                          // オンメモリのバンドルファイルの仮想的なパス
+    hot             : true,                         // HMRの利用
+    watchOptions    : {
+        poll            : true,                      // ファイルの更新が正しく検知されない場合に利用
+        ignored: /node_modules/
+    },
+  },
+
   module: {
     rules: [{
       test: /\.js$/,

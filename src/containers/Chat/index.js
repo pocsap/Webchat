@@ -103,6 +103,7 @@ class Chat extends Component {
               if (!res) {
                 throw new Error('Fail send message')
               }
+              console.log( ">>> Response Data >>>\n", res.data )
               const data = res.data
               const messages =
                 data.messages.length === 0
@@ -182,9 +183,8 @@ class Chat extends Component {
   }
 
   resetWebchat = () => {
-    console.log(this)
     this.props.removeAllMessages()
-    this.sendMessage({ type: 'text', content: 'resetdata' })
+    this.sendMessage( { type: 'text', content: 'resetdata' } )
   }
 
   render() {
