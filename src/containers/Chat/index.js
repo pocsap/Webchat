@@ -12,6 +12,9 @@ import {
   removeAllMessages,
   addBotMessage,
   addUserMessage,
+  addMessageInfo,
+  dropFileAccept,
+  dropFileReject
 } from 'actions/messages'
 
 import Header from 'components/Header'
@@ -28,6 +31,10 @@ import './style.scss'
     conversationId: state.conversation.conversationId,
     lastMessageId: state.conversation.lastMessageId,
     messages: state.messages,
+    showInfo: true,
+    dropped: state.uploadFile.dropped,
+    dndFiles: state.uploadFile.dndFiles,
+    dndMessage: state.uploadFile.dndMessage
   }),
   {
     postMessage,
@@ -36,13 +43,16 @@ import './style.scss'
     removeAllMessages,
     addUserMessage,
     addBotMessage,
+    addMessageInfo,
+    dropFileAccept,
+    dropFileReject
   },
 )
 class Chat extends Component {
   state = {
     messages: this.props.messages,
     showSlogan: true,
-    inputHeight: 50, // height of input (default: 50px)
+    inputHeight: 50, // height of input (default: 50px),
   }
 
   componentDidMount() {
@@ -187,6 +197,25 @@ class Chat extends Component {
     this.sendMessage( { type: 'text', content: 'resetdata' } )
   }
 
+  onClickShowInfo = message => {
+    const { addMessageInfo } = this.props
+    const { msgData } = this.props
+    console.log( 'Message :', message )
+    addMessageInfo(message)
+  }
+
+  dropFileAccepted = dndFiles => {
+    //
+    this.props.addBotMessage([{ type: 'text', content: 'File Dropped', error: false }])
+    this.props.dropFileAccept( dndFiles )
+
+  }
+
+  dropFileRejected = () => {
+    //
+    this.props.dropFileReject()
+  }
+
   render() {
     const {
       closeWebchat,
@@ -203,6 +232,9 @@ class Chat extends Component {
       logoStyle,
       show,
       enableHistoryInput,
+      dropped,
+      dndFiles,
+      dndMessage
     } = this.props
     const { showSlogan, messages, inputHeight } = this.state
 
@@ -243,8 +275,13 @@ class Chat extends Component {
                   onRetrySendMessage={this.retrySendMessage}
                   onCancelSendMessage={this.cancelSendMessage}
                   showInfo={showInfo}
-                  onClickShowInfo={onClickShowInfo}
+                  onClickShowInfo={this.onClickShowInfo}
                   containerMessagesStyle={containerMessagesStyle}
+                  dropFileAccepted={ this.dropFileAccepted }
+                  dropFileRejected={ this.dropFileRejected }
+                  dropped={ dropped }
+                  dndFiles={ dndFiles }
+                  dndMessage={ dndMessage }
                 />,
                 <div
                   key="slogan"
@@ -290,6 +327,8 @@ Chat.propTypes = {
   containerStyle: PropTypes.object,
   show: PropTypes.bool,
   enableHistoryInput: PropTypes.bool,
+  dropFileAccept: PropTypes.func,
+  dropFileReject: PropTypes.func,
 }
 
 export default Chat

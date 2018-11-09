@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions'
 
+// 2nd argument will be handed over to the middleware as "action.payload"
 export const postMessage = createAction('API:POST_MESSAGE', (channelId, token, data) => ({
   url: `/webhook/${channelId}`,
   method: 'post',
@@ -35,3 +36,8 @@ export const addBotMessage = createAction('ADD_BOT_MESSAGE', (messages, data) =>
 }))
 
 export const addUserMessage = createAction('ADD_USER_MESSAGE')
+
+export const addMessageInfo = createAction('ADD_MESSAGE_INFO')
+
+export const dropFileAccept = createAction( 'DROP_FILE_ACCEPTED' )
+export const dropFileReject = createAction( 'DROP_FILE_REJECTED' )

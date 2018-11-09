@@ -6,7 +6,7 @@ const env = process.env.NODE_ENV || 'development'
 
 module.exports = {
 
-  entry: ['babel-polyfill', './src/script.js'],
+  entry: [ './src/script.js' ],
 
   devtool: 'cheap-module-source-map',
 
@@ -40,7 +40,7 @@ module.exports = {
       loader: 'babel-loader',
       exclude: /node-modules/,
       options: {
-        presets: ['react'],
+        presets: ['@babel/preset-react'],
         cacheDirectory: true,
       },
     }, {
@@ -57,6 +57,10 @@ module.exports = {
         },
         'sass-loader',
       ],
+      exclude: /node_modules/,
+    }, {
+      test: /\.css$/,
+      use: [ 'style-loader', 'css-loader' ],
       exclude: /node_modules/,
     }]
   },

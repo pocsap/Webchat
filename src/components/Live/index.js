@@ -5,11 +5,14 @@ import reduceRight from 'lodash/reduceRight'
 import Message from 'components/Message'
 import IsTyping from 'components/Message/isTyping'
 
+//import Dropzone from 'react-dropzone'
+
 import './style.scss'
 
 class Live extends Component {
   state = {
     showTyping: false,
+    //dndFiles: this.props.dndFiles
   }
 
   componentDidMount() {
@@ -42,6 +45,15 @@ class Live extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleScroll)
+
+    // Make sure to revoke the data uris to avoid memory leaks
+    /*
+    const{ dndFiles } = this.state
+    for (let i = dndFiles.length; i >= 0; i--) {
+      const file = dndFiles[i];
+      URL.revokeObjectURL( file.preview );
+    }
+    */
   }
 
   handleScroll = () => {
@@ -77,6 +89,24 @@ class Live extends Component {
     )
   }
 
+  //Moved to ../Message/DropArea
+//  onDropAccepted( func, dndFiles ){
+    //Manually add the property "preview", because this property was deleted at Ver 7.0.0 of react-dropzone.
+    // Follwoing code is failed because the property "preview" is undefined.
+    /*
+    this.setState({
+      dndFiles: dndFiles.map( file => ({
+        ...file,
+        preview: URL.createObjectURL(file)
+      }))
+    });
+    */
+    // So directly assign the value
+//    dndFiles.map( file => file.preview = URL.createObjectURL( file ) )
+    
+//    func( dndFiles )
+//  }
+
   render() {
     const {
       messages,
@@ -87,6 +117,11 @@ class Live extends Component {
       containerMessagesStyle,
       showInfo,
       onClickShowInfo,
+      dropped,
+      dndFiles,
+      dndMessage,
+      dropFileAccepted,
+      dropFileRejected
     } = this.props
     const { showTyping } = this.state
     const lastMessage = messages.slice(-1)[0]
@@ -104,6 +139,29 @@ class Live extends Component {
         onScroll={this.handleScroll}
         style={containerMessagesStyle}
       >
+        {/* Moved to ../Message/DropArea
+        <div>
+          <Dropzone
+            onDropAccepted={this.onDropAccepted.bind( this, dropFileAccepted )}
+            onDropRejected={ dropFileRejected }
+            accept="image/gif, image/jpeg, image/png, image/jpg" >
+            <div>
+              Specify the file or Drag & Dropzone
+              <p>Format: gif/png/jpeg/jpg</p>
+            </div>
+          </Dropzone>
+          <h1>{ dropped ? 'Selected': 'Not selected' } </h1>
+          <h1>{ dndMessage }</h1>
+          { dndFiles.map( file => {
+            return (
+              <div key={ file.preview }>
+                <h1>{ file.name }</h1>
+                <img src={ file.preview } />
+              </div>
+            )
+          })}
+        </div>
+        */}
         <div className="RecastAppLive--message-container">
           {this.fmtMessages().map((message, index) => (
             <Message
@@ -120,6 +178,11 @@ class Live extends Component {
               showInfo={showInfo}
               onClickShowInfo={onClickShowInfo}
               error={message.error}
+              dropFileAccepted={ dropFileAccepted }
+              dropFileRejected={ dropFileRejected }
+              dropped={ dropped }
+              dndFiles={ dndFiles }
+              dndMessage={ dndMessage }
             />
           ))}
 
@@ -143,6 +206,11 @@ Live.propTypes = {
   onRetrySendMessage: PropTypes.func,
   onCancelSendMessage: PropTypes.func,
   showInfo: PropTypes.bool,
+  dropped: PropTypes.bool.isRequired,
+  dndFiles: PropTypes.array.isRequired,
+  dndMessage: PropTypes.string.isRequired,
+  dropFileAccepted: PropTypes.func.isRequired,
+  dropFileRejected: PropTypes.func.isRequired
 }
 
 export default Live

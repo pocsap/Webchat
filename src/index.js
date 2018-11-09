@@ -6,7 +6,7 @@ import Webchat from './containers/App'
 
 // https://github.com/babel/babel-loader/issues/401
 if (!global._babelPolyfill) {
-  require('babel-polyfill')
+  require('@babel/polyfill')
 }
 
 export default class RecastWebchat extends Component {
