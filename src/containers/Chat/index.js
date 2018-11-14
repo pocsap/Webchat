@@ -34,7 +34,8 @@ import './style.scss'
     showInfo: true,
     dropped: state.uploadFile.dropped,
     dndFiles: state.uploadFile.dndFiles,
-    dndMessage: state.uploadFile.dndMessage
+    dndMessage: state.uploadFile.dndMessage,
+    dateTime: state.inputValue.dateTime
   }),
   {
     postMessage,
@@ -234,7 +235,8 @@ class Chat extends Component {
       enableHistoryInput,
       dropped,
       dndFiles,
-      dndMessage
+      dndMessage,
+      dateTime
     } = this.props
     const { showSlogan, messages, inputHeight } = this.state
 
@@ -299,6 +301,7 @@ class Chat extends Component {
           enableHistoryInput={enableHistoryInput}
           inputPlaceholder={propOr('Write a reply', 'userInputPlaceholder', preferences)}
           characterLimit={propOr(0, 'characterLimit', preferences)}
+          dateTime={ dateTime }
         />
       </div>
     )

@@ -1,3 +1,4 @@
+//import React, { Component } from 'react'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import * as R from 'ramda'
@@ -20,6 +21,12 @@ class Input extends Component {
     this._input.value = ''
 
     this.onInputHeight()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if ( nextProps.dateTime !== this.props.dateTime && nextProps.dateTime !== "" ){
+      this.setState({ value: nextProps.dateTime });
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {

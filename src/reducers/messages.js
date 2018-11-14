@@ -96,6 +96,7 @@ export default handleActions(
 
       return [...state, ...[message]]
     },
+
   },
 
   initialState,

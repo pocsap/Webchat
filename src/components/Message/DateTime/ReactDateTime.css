@@ -233,3 +233,10 @@ td.rdtYear:hover {
   background: white;
   color: #428bca;
 }
+
+.rdtTimeToggle{
+  background-image: url("./images/myReset.png");
+  background-size: 7%;
+  background-repeat: no-repeat;
+  background-position: 28% 50%;
+}

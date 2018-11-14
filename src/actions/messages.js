@@ -41,3 +41,5 @@ export const addMessageInfo = createAction('ADD_MESSAGE_INFO')
 
 export const dropFileAccept = createAction( 'DROP_FILE_ACCEPTED' )
 export const dropFileReject = createAction( 'DROP_FILE_REJECTED' )
+
+export const changeInputValue =  createAction( 'CHANGE_INPUT_VALUE' )

@@ -13,6 +13,14 @@ import './style.scss'
 const NO_LOCALSTORAGE_MESSAGE =
   'Sorry, your browser does not support web storage. Are you in localhost ?'
 
+/*
+<Referrence URL> https://qiita.com/TsutomuNakamura/items/ceaa2552bbbca1bac24e
+このconnect decolator はReact とRedux Store を接続する役割を持っており、引数にstate をprops と対応付ける関数と、dispatch をprops に対応付ける関数を指定することができます。
+これらはstore から提供される関数を指定します。
+
+そして@connect decolator で実行される1 つ目の関数はprops としてstore の値を取得する関数です。
+返り値としてstate のkey を指定することによって、connect されたクラスのthis.props からstate の値を取得することができます。
+*/
 @connect(
   state => ({
     isReady: state.conversation.conversationId,
