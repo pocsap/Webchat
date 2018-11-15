@@ -234,9 +234,22 @@ td.rdtYear:hover {
   color: #428bca;
 }
 
+.rdtPicker th,
+.rdtPicker td {
+  border-radius: 3px;
+}
+
 .rdtTimeToggle{
-  background-image: url("./images/myReset.png");
+  background-image: url("./images/iconClock.png");
   background-size: 7%;
   background-repeat: no-repeat;
   background-position: 28% 50%;
 }
+
+.rdtSwitch{
+  background-image: url("./images/iconCalendar.png");
+  background-size: 9%;
+  background-repeat: no-repeat;
+  background-position: 18% 50%;
+}
+

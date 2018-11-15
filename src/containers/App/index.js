@@ -8,6 +8,8 @@ import { setFirstMessage, removeAllMessages } from 'actions/messages'
 import { setCredentials, createConversation } from 'actions/conversation'
 import { storeCredentialsInCookie, getCredentialsFromCookie } from 'helpers'
 
+import { I18n } from 'react-redux-i18n'
+
 import './style.scss'
 
 const NO_LOCALSTORAGE_MESSAGE =
@@ -29,18 +31,19 @@ const NO_LOCALSTORAGE_MESSAGE =
     setCredentials,
     setFirstMessage,
     createConversation,
-    removeAllMessages,
+    removeAllMessages
   },
 )
 class App extends Component {
   state = {
-    expanded: this.props.expanded || false,
+    expanded: this.props.expanded || false
   }
 
   componentDidMount() {
     const { channelId, token, preferences, noCredentials, onRef } = this.props
     const credentials = getCredentialsFromCookie()
     const payload = { channelId, token }
+    const firstMessage = (preferences.welcomeMessage) || I18n.t('application.welcome', {headerTitle: preferences.headerTitle })
 
     if (onRef) {
       onRef(this)
@@ -58,9 +61,12 @@ class App extends Component {
       })
     }
 
+    /*
     if (preferences.welcomeMessage) {
       this.props.setFirstMessage(preferences.welcomeMessage)
     }
+    */
+    this.props.setFirstMessage(firstMessage)
 
     this.props.setCredentials(payload)
   }

@@ -1,0 +1,7 @@
+{
+	"application":{
+		"title": "日本語タイトル",
+      	"hello": "こんにちは、%{name}!",
+      	"welcome": "ようこそ %{headerTitle} へ!\n質問を入力してください。"
+    }
+}

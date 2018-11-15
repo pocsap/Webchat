@@ -6,6 +6,23 @@ import { store } from 'store'
 import { getChannelPreferences } from 'actions/channel'
 import App from 'containers/App'
 
+import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n'
+import { I18n } from 'react-redux-i18n'
+import translationObjects from './i18n/translationObjects'
+
+
+const browserLocale = (window.navigator.languages && window.navigator.languages[0]) ||
+                      window.navigator.language ||
+                      window.navigator.userLanguage ||
+                      window.navigator.browserLanguage
+
+console.log(">>> browserLocale >>>", browserLocale)
+
+// For I18N
+syncTranslationWithStore(store)
+store.dispatch(loadTranslations(translationObjects));
+store.dispatch(setLocale(browserLocale));
+
 const idChatDiv = 'recast-webchat-div'
 
 if (!document.getElementById(idChatDiv)) {

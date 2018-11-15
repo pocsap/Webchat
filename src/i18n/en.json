@@ -1,0 +1,7 @@
+{
+	"application":{
+		"title": "English Title",
+	  	"hello": "Hello, %{name}!",
+	  	"welcome": "Welcome to %{headerTitle}!\nPlease input the question!"
+ 	}
+}
