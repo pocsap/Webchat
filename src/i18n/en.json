@@ -3,5 +3,14 @@
 		"title": "English Title",
 	  	"hello": "Hello, %{name}!",
 	  	"welcome": "Welcome to %{headerTitle}!\nPlease input the question!"
+ 	},
+ 	"dropArea":{
+ 		"areaMessage": "Select files by clicking here, or drop files to here directly.",
+ 		"acceptedExtentions": "Accepted Format: gif/png/jpeg/jpg"
+ 	},
+ 	"botMessage":{
+ 		"sendingDropFiles": "Sending dropped files to the server.",
+ 		"sendFilesSuccess": "Dropped files are sent to the server successfully.",
+ 		"sendFilesFailed": "Sending dropped files to the server is failed."
  	}
 }

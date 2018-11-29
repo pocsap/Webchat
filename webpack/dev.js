@@ -21,7 +21,7 @@ module.exports = {
   },
 
   devServer : {
-    port            : 8080,                         // ポートを指定
+    port            : 8000,                         // ポートを指定
     progress        : true,                         // 変換の進捗をコンソールに表示
     inline          : true,                         // インライン/iframeモードの指定(通常インラインでいい)
     clientLogLevel  : 'info',                       // バンドル作成に関するログのレベル(none, error, warning, info)

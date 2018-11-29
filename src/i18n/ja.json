@@ -3,5 +3,14 @@
 		"title": "日本語タイトル",
       	"hello": "こんにちは、%{name}!",
       	"welcome": "ようこそ %{headerTitle} へ!\n質問を入力してください。"
-    }
+    },
+ 	"dropArea":{
+ 		"areaMessage": "ここをクリックしてファイルを選択するか、直接ファイルをここにドロップしてください。",
+ 		"acceptedExtentions": "選択可能なファイル: gif/png/jpeg/jpg"
+    },
+    "botMessage":{
+ 		"sendingDropFiles": "ドロップされたファイルをサーバーに転送しています。",
+  		"sendFilesSuccess": "ドロップされたファイルを正常にサーバーに転送しました。",
+ 		"sendFilesFailed": "ドロップされたファイルのサーバーへの転送に失敗しました。"
+ 	}
 }

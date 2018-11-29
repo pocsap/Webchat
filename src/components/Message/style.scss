@@ -291,4 +291,17 @@
       border-top: 1px solid lightgrey;
     }
   }
+  /*
+   * Drop Area
+   */
+  .DropArea {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    color: #428bca;
+  }
+
 }
+

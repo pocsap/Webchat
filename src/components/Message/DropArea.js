@@ -5,23 +5,48 @@ import Dropzone from 'react-dropzone'
 
 import './style.scss'
 
+import { Translate, Localize } from 'react-redux-i18n'
 
 class DropArea extends Component {
-  onDropAccepted( func, dndFiles ){
+  state = {
+    dndFiles: this.props.dndFiles
+  }
+
+  onDropAccepted( func, droppedFiles ){
     //Manually add the property "preview", because this property was deleted at Ver 7.0.0 of react-dropzone.
-    // Follwoing code is failed because the property "preview" is undefined.
+    // Follwoing code is failed. It seems that spread operator for the object is not working.
+    
     /*
     this.setState({
-      dndFiles: dndFiles.map( file => ({
+      dndFiles: droppedFiles.map( file => ({
         ...file,
         preview: URL.createObjectURL(file)
       }))
     });
+    
+    // The following is just for testing
+    let fileArray = droppedFiles.map( file => ({
+        ...file,
+        preview: URL.createObjectURL(file)
+      }))
+
+    console.log(">>> this.state.dndFiles >>>", this.state.dndFiles )
     */
+
     // So directly assign the value
-    dndFiles.map( file => file.preview = URL.createObjectURL( file ) )
-    func( dndFiles )
+    droppedFiles.map( file => file.preview = URL.createObjectURL( file ) )
+    
+    func( droppedFiles )
   }
+
+  componentWillUnmount() {
+    // Make sure to revoke the data uris to avoid memory leaks
+    const {dndFiles} = this.props;
+    for (let i = dndFiles.length - 1; i >= 0; i--) {
+      URL.revokeObjectURL(dndFiles[i].preview);
+    }
+  }
+
 
   render(){
     const {
@@ -38,9 +63,10 @@ class DropArea extends Component {
             onDropAccepted={this.onDropAccepted.bind( this, dropFileAccepted )}
             onDropRejected={ dropFileRejected }
             accept="image/gif, image/jpeg, image/png, image/jpg" >
-            <div>
-              Specify the file or Drag & Dropzone
-              <p>Format: gif/png/jpeg/jpg</p>
+            <div className={'DropArea'}>
+              <Translate value="dropArea.areaMessage"/>
+              <p> </p>
+              <p><Translate value="dropArea.acceptedExtentions"/></p>
             </div>
           </Dropzone>
           <h1>{ dropped ? 'Selected': 'Not selected' } </h1>

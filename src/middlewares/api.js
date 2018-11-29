@@ -3,7 +3,11 @@ import qs from 'query-string'
 import axios from 'axios'
 
 export default store => next => action => {
-  if (!action.type.startsWith('API:')) {
+  let targetUrl,
+      fData = new FormData(),
+      bodyData
+
+  if ( !action.type.startsWith('API:') && !action.type.startsWith('OWN:') ) {
     return next(action)
   }
 
@@ -11,15 +15,30 @@ export default store => next => action => {
   const prefix = action.type.split(':')[1]
   const { method = 'get', url, data, headers, query } = action.payload
 
+  if ( action.type.startsWith('API') ){
+    targetUrl = `${config.apiUrl}${url}${query ? '?' : ''}${qs.stringify(query || {})}`
+    bodyData = data
+  } 
+  else {
+    targetUrl = `${config.ownUrl}${url}`
+
+    data.map( file => {
+      fData.append( 'uploadFiles', file )
+    })
+
+    bodyData = fData
+
+  }
+
   const options = {
     method,
-    data,
+    data: bodyData,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       ...headers,
     },
-    url: `${config.apiUrl}${url}${query ? '?' : ''}${qs.stringify(query || {})}`,
+    url: targetUrl,
   }
 
   return axios(options)

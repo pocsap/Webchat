@@ -14,12 +14,16 @@ import {
   addUserMessage,
   addMessageInfo,
   dropFileAccept,
-  dropFileReject
+  dropFileReject,
+  dropFileReset,
+  sendDroppedFiles
 } from 'actions/messages'
 
 import Header from 'components/Header'
 import Live from 'components/Live'
 import Input from 'components/Input'
+
+import { I18n } from 'react-redux-i18n'
 
 import './style.scss'
 
@@ -35,6 +39,7 @@ import './style.scss'
     dropped: state.uploadFile.dropped,
     dndFiles: state.uploadFile.dndFiles,
     dndMessage: state.uploadFile.dndMessage,
+    isDroppedFileSent: state.uploadFile.isDroppedFileSent,
     dateTime: state.inputValue.dateTime
   }),
   {
@@ -46,7 +51,9 @@ import './style.scss'
     addBotMessage,
     addMessageInfo,
     dropFileAccept,
-    dropFileReject
+    dropFileReject,
+    dropFileReset,
+    sendDroppedFiles
   },
 )
 class Chat extends Component {
@@ -194,6 +201,7 @@ class Chat extends Component {
   }
 
   resetWebchat = () => {
+    this.props.dropFileReset()
     this.props.removeAllMessages()
     this.sendMessage( { type: 'text', content: 'resetdata' } )
   }
@@ -205,10 +213,29 @@ class Chat extends Component {
     addMessageInfo(message)
   }
 
-  dropFileAccepted = dndFiles => {
+  dropFileAccepted = async dndFiles => {
     //
-    this.props.addBotMessage([{ type: 'text', content: 'File Dropped', error: false }])
-    this.props.dropFileAccept( dndFiles )
+    const {
+      dropFileAccept,
+      addBotMessage,
+      sendDroppedFiles
+    } = this.props
+
+    dropFileAccept( dndFiles )
+    addBotMessage([{ type: 'text', content: I18n.t( 'botMessage.sendingDropFiles' ), error: false }])
+    // I don't know why but it is possible to use "await", even though the promise is not returned apparently.
+    // Is this because that axios statement is returned by middleware?
+    // This should be clarified later.
+    // By the way, if you eliminate "await" from the following statement, console.log command below is executed before getting the response from the axios. 
+    await sendDroppedFiles( dndFiles )
+    console.log("=== After sendDroppedFiles (This should be after the reducer) ===")
+
+    if ( this.props.isDroppedFileSent ){
+      this.sendMessage({ type: 'text', content: I18n.t( 'botMessage.sendFilesSuccess' ) })
+    }
+    else {
+      addBotMessage([{ type: 'text', content: I18n.t( 'botMessage.sendFilesFailed' ), error: true }])
+    }
 
   }
 
