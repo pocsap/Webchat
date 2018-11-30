@@ -13,7 +13,7 @@ export default store => next => action => {
 
   const { dispatch } = store
   const prefix = action.type.split(':')[1]
-  const { method = 'get', url, data, headers, query } = action.payload
+  const { method = 'get', url, data, headers, query, convId } = action.payload
 
   if ( action.type.startsWith('API') ){
     targetUrl = `${config.apiUrl}${url}${query ? '?' : ''}${qs.stringify(query || {})}`
@@ -26,8 +26,10 @@ export default store => next => action => {
       fData.append( 'uploadFiles', file )
     })
 
+    fData.append( 'convId', convId ) 
+    
+    // To check the contents of fData: for(item of fData) console.log(item);
     bodyData = fData
-
   }
 
   const options = {

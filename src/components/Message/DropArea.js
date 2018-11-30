@@ -62,7 +62,7 @@ class DropArea extends Component {
           <Dropzone
             onDropAccepted={this.onDropAccepted.bind( this, dropFileAccepted )}
             onDropRejected={ dropFileRejected }
-            accept="image/gif, image/jpeg, image/png, image/jpg" >
+            accept="image/gif, image/jpeg, image/png, image/jpg, text/plain" >
             <div className={'DropArea'}>
               <Translate value="dropArea.areaMessage"/>
               <p> </p>

@@ -218,16 +218,18 @@ class Chat extends Component {
     const {
       dropFileAccept,
       addBotMessage,
-      sendDroppedFiles
+      sendDroppedFiles,
+      conversationId,
+      dropFileReset
     } = this.props
 
     dropFileAccept( dndFiles )
     addBotMessage([{ type: 'text', content: I18n.t( 'botMessage.sendingDropFiles' ), error: false }])
     // I don't know why but it is possible to use "await", even though the promise is not returned apparently.
-    // Is this because that axios statement is returned by middleware?
+    // Is this because that axios statement (returns promise) is returned by middleware?
     // This should be clarified later.
     // By the way, if you eliminate "await" from the following statement, console.log command below is executed before getting the response from the axios. 
-    await sendDroppedFiles( dndFiles )
+    await sendDroppedFiles( dndFiles, conversationId )
     console.log("=== After sendDroppedFiles (This should be after the reducer) ===")
 
     if ( this.props.isDroppedFileSent ){
@@ -236,6 +238,9 @@ class Chat extends Component {
     else {
       addBotMessage([{ type: 'text', content: I18n.t( 'botMessage.sendFilesFailed' ), error: true }])
     }
+
+    // Not necessary? If it resets, the preview images are gone after this statement.
+    //dropFileReset()
 
   }
 

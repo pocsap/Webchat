@@ -40,10 +40,11 @@ export const addUserMessage = createAction('ADD_USER_MESSAGE')
 export const addMessageInfo = createAction('ADD_MESSAGE_INFO')
 
 export const dropFileAccept = createAction( 'DROP_FILE_ACCEPTED' )
-export const sendDroppedFiles = createAction( 'OWN:SEND_DROPPED_FILES', data => ({
+export const sendDroppedFiles = createAction( 'OWN:SEND_DROPPED_FILES', ( files, conversationId ) => ({
   url: '/upload_files',
   method: 'post',
-  data
+  data: files,
+  convId: conversationId,
 }) )
 export const dropFileReject = createAction( 'DROP_FILE_REJECTED' )
 export const dropFileReset = createAction( 'DROP_FILE_RESET' )
