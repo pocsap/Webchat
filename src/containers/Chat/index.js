@@ -35,7 +35,7 @@ import './style.scss'
     conversationId: state.conversation.conversationId,
     lastMessageId: state.conversation.lastMessageId,
     messages: state.messages,
-    showInfo: true,
+    showInfo: false,
     dropped: state.uploadFile.dropped,
     dndFiles: state.uploadFile.dndFiles,
     dndMessage: state.uploadFile.dndMessage,
