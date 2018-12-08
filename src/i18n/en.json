@@ -9,8 +9,8 @@
  		"acceptedExtentions": "Accepted Format: gif/png/jpeg/jpg"
  	},
  	"botMessage":{
- 		"sendingDropFiles": "Sending dropped files to the server.",
- 		"sendFilesSuccess": "Dropped files are sent to the server successfully.",
- 		"sendFilesFailed": "Sending dropped files to the server is failed."
+ 		"sendingDropFiles": "Sending dropped files to the middleware server.",
+ 		"sendFilesSuccess": "Dropped files are sent to the middleware server successfully.",
+ 		"sendFilesFailed": "Sending dropped files to the middleware server is failed."
  	}
 }

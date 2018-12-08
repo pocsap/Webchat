@@ -7,6 +7,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const env = process.env.NODE_ENV || 'development'
 
 module.exports = {
+  // mode (since webpack4) にはproductionとdevelopmentがあります。 
+  //productionは最適化オプションであるwebpack.optimizationのプラグインが有効になります。そのため、今まで指定していたwebpack.optimize.UglifyJsPluginは不要となります。
+  mode: 'production', 
 
   entry: [ './src/script.js' ],
 
@@ -26,7 +29,7 @@ module.exports = {
       loader: 'babel-loader',
       exclude: /node-modules/,
       options: {
-        cacheDirectory: true,
+        cacheDirectory: true
       },
     }, {
       test: /\.scss$/,
@@ -58,11 +61,17 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
 
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
+    // The following option is redundant in webpack 2, according to https://github.com/webpack/docs/wiki/optimization
+    //new webpack.optimize.DedupePlugin(),
+
+    /* 
+    // Comment out due to the error: Error: webpack.optimize.UglifyJsPlugin has been removed, please use config.optimization.minimize instead.
+    // Replaced by the option "mode = 'prodoction'".
     new webpack.optimize.UglifyJsPlugin({
       compressor: { warnings: false },
       minimize: true,
     }),
+    */
 
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: JSON.stringify(env) }
