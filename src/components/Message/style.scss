@@ -1,3 +1,5 @@
+$qrColor: cornflowerblue;
+
 .RecastAppMessageContainer {
   position: relative;
   display: flex;
@@ -159,7 +161,7 @@
     }
 
     &--button {
-      display: flex;
+      display: flex !important;
       align-items: center;
       justify-content: center;
 
@@ -170,6 +172,9 @@
       cursor: pointer;
       font-weight: bold;
       border-radius: 25px;
+
+      color: $qrColor;
+      border: 1px solid $qrColor;
     }
   }
 

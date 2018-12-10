@@ -2,6 +2,7 @@ const path = require('path')
 const precss = require('precss')
 const webpack = require('webpack')
 const autoprefixer = require('autoprefixer')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const env = process.env.NODE_ENV || 'development'
@@ -9,7 +10,7 @@ const env = process.env.NODE_ENV || 'development'
 module.exports = {
   // mode (since webpack4) にはproductionとdevelopmentがあります。 
   //productionは最適化オプションであるwebpack.optimizationのプラグインが有効になります。そのため、今まで指定していたwebpack.optimize.UglifyJsPluginは不要となります。
-  mode: 'production', 
+  mode: 'production',
 
   entry: [ './src/script.js' ],
 
@@ -29,6 +30,7 @@ module.exports = {
       loader: 'babel-loader',
       exclude: /node-modules/,
       options: {
+        presets: ['@babel/preset-react'],
         cacheDirectory: true
       },
     }, {
@@ -58,7 +60,8 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.NamedModulesPlugin(),
+    new ProgressBarPlugin(),
+    //new webpack.NamedModulesPlugin(), //HMRを使用している時、moduleの相対パスを表示してくれる(HMRを入れる時にこいつも入れるよう推奨されている)
 
     new webpack.optimize.OccurrenceOrderPlugin(),
     // The following option is redundant in webpack 2, according to https://github.com/webpack/docs/wiki/optimization

@@ -43,6 +43,10 @@ class QuickReplies extends Component {
     const { content, style } = this.props
     const { displayQuickReplies, showArrow } = this.state
     const { title, buttons } = content
+    const customStyle = {
+      border: `1px solid ${style.accentColor}`,
+      color: style.accentColor
+    }
 
     return (
       <div
@@ -74,10 +78,9 @@ class QuickReplies extends Component {
                   key={i}
                   className="RecastAppQuickReplies--button"
                   onClick={() => this.doSendMessage({ type: 'quickReply', content: b })}
-                  style={{
-                    border: `1px solid ${style.accentColor}`,
-                    color: style.accentColor,
-                  }}
+                  /* I don't know why but the following style does not work! 
+                     And If you eliminate the following style statement, arrow button of quick reply is gone */
+                  style={customStyle}
                 >
                   {truncate(b.title, 20)}
                 </div>
