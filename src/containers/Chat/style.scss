@@ -48,7 +48,7 @@
     transition: opacity 0.3s, visibility 0.3s;
   }
 }
-
+/*
 @media only screen and (min-width: 420px) and (min-height: 575px) {
   .RecastApp .RecastAppChat {
     right: 10px;
@@ -65,6 +65,7 @@
     }
   }
 }
+*/
 @media only screen and (max-width: 420px) {
   .RecastApp .RecastAppChat {
     &--slogan {

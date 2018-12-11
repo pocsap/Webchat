@@ -48,6 +48,8 @@ class QuickReplies extends Component {
       color: style.accentColor
     }
 
+    document.documentElement.style.setProperty('--qrColor', style.accentColor)
+
     return (
       <div
         className="RecastAppQuickReplies"

@@ -1,4 +1,4 @@
-$qrColor: cornflowerblue;
+$generalAccentColor: cornflowerblue;
 
 .RecastAppMessageContainer {
   position: relative;
@@ -173,8 +173,8 @@ $qrColor: cornflowerblue;
       font-weight: bold;
       border-radius: 25px;
 
-      color: $qrColor;
-      border: 1px solid $qrColor;
+      color: var(--qrColor, $generalAccentColor);
+      border: 1px solid var(--qrColor, $generalAccentColor);
     }
   }
 
