@@ -74,6 +74,25 @@ class Chat extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { messages, show } = nextProps
+    // >>> Start of additional function of voice message.
+    let ssu = new SpeechSynthesisUtterance(),
+        ssi = window.speechSynthesis,
+        voices = ssi.getVoices(),
+        msgObj =  messages[messages.length - 1]
+
+    // Sometimes it never speak anything suddenly even though the code is executed without error.
+    // To avoid this case, make it stop by the following cancel method for just in case. 
+    if ( !ssi.speaking || ssi.pending ) ssi.cancel()
+    // ssu.voice = voices[7] // voices[7]:Google 日本人 ja-JP // If you set this value, the pronunciation became very bad for Japanese.
+    ssu.lang = 'ja-JP'
+    
+    if ( show && msgObj ){
+      if ( msgObj.isWelcomeMessage || messages !== this.state.messages ){
+        ssu.text = msgObj.attachment.content.title || msgObj.attachment.content
+        ssi.speak(ssu)
+      }
+    }
+    // <<< End of additional function of voice message.
 
     if (messages !== this.state.messages) {
       this.setState({ messages }, () => {
