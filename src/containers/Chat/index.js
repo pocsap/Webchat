@@ -27,6 +27,10 @@ import { I18n } from 'react-redux-i18n'
 
 import './style.scss'
 
+const MAX_GET_MEMORY_TIME = 10 * 1000 // in ms
+const FAILED_TO_GET_MEMORY = 'Could not get memory from webchatMethods.getMemory :'
+const WRONG_MEMORY_FORMAT = 'Wrong memory format, expecting : { "memory": <json>, "merge": <boolean> }'
+
 @connect(
   state => ({
     token: state.conversation.token,
@@ -108,7 +112,73 @@ class Chat extends Component {
     }
   }
 
-  sendMessage = attachment => {
+  /*
+    The window.webchatMethods.getMemory function can return
+    a JSON object or a Promise resolving to a JSON object
+    Accepted format for the returned object is :
+    { memory: arbitrary JSON, merge: boolean }
+  */
+  getMemoryOptions = chatId => {
+    const checkResponseFormat = memoryOptions => {
+      if (typeof memoryOptions !== 'object') {
+        console.error(WRONG_MEMORY_FORMAT)
+        console.error('Got : ')
+        console.error(memoryOptions)
+        return undefined
+      }
+      if (!('merge' in memoryOptions) || typeof memoryOptions.merge !== 'boolean') {
+        console.error(WRONG_MEMORY_FORMAT)
+        console.error('Got : ')
+        console.error(memoryOptions)
+        return undefined
+      }
+      if (!('memory' in memoryOptions) || typeof memoryOptions.memory !== 'object') {
+        console.error(WRONG_MEMORY_FORMAT)
+        console.error('Got : ')
+        console.error(memoryOptions)
+        return undefined
+      }
+      return memoryOptions
+    }
+
+    return new Promise(resolve => {
+      if (!window.webchatMethods || !window.webchatMethods.getMemory) {
+        return resolve()
+      }
+      // so that we send the message in all cases
+      setTimeout(resolve, MAX_GET_MEMORY_TIME)
+      try {
+        const memoryOptionsResponse = window.webchatMethods.getMemory(chatId)
+        if (!memoryOptionsResponse) {
+          return resolve()
+        }
+        if (memoryOptionsResponse.then && typeof memoryOptionsResponse.then === 'function') {
+          // the function returned a Promise
+          memoryOptionsResponse
+            .then(memoryOptions => resolve(checkResponseFormat(memoryOptions)))
+            .catch(err => {
+              console.error(FAILED_TO_GET_MEMORY)
+              console.error(err)
+              resolve()
+            })
+        } else {
+          resolve(checkResponseFormat(memoryOptionsResponse))
+        }
+      } catch (err) {
+        console.error(FAILED_TO_GET_MEMORY)
+        console.error(err)
+        resolve()
+      }
+    })
+  }
+
+  shouldHideBotReply = (responseData) => {
+    return responseData.conversation && responseData.conversation.skill === 'qna'
+    && Array.isArray(responseData.nlp) && !responseData.nlp.length
+    && Array.isArray(responseData.messages) && !responseData.messages.length;
+  }
+
+  sendMessage = (attachment, userMessage) => {
     const {
       token,
       channelId,
@@ -120,7 +190,7 @@ class Chat extends Component {
     } = this.props
     const payload = { message: { attachment }, chatId }
 
-    const message = {
+    const backendMessage = {
       ...payload.message,
       isSending: true,
       id: `local-${Math.random()}`,
@@ -129,13 +199,16 @@ class Chat extends Component {
       },
     }
 
+    if (userMessage)
+      userMessage = {...JSON.parse(JSON.stringify(backendMessage)), attachment: { type: 'text', content: userMessage}};
+
     this.setState(
-      prevState => ({ messages: _concat(prevState.messages, [message]) }),
+      prevState => ({ messages: _concat(prevState.messages, [backendMessage]) }),
       () => {
         if (sendMessagePromise) {
-          addUserMessage(message)
+          addUserMessage(userMessage || backendMessage);
 
-          sendMessagePromise(message)
+          sendMessagePromise(backendMessage)
             .then(res => {
               if (!res) {
                 throw new Error('Fail send message')
@@ -146,19 +219,27 @@ class Chat extends Component {
                 data.messages.length === 0
                   ? [{ type: 'text', content: 'No reply', error: true }]
                   : data.messages
-              addBotMessage(messages, data)
+              if (!this.shouldHideBotReply(data)) addBotMessage(messages, data)
             })
             .catch(() => {
               addBotMessage([{ type: 'text', content: 'No reply', error: true }])
             })
         } else {
-          postMessage(channelId, token, payload).then(() => {
-            if (this.timeout) {
-              clearTimeout(this.timeout)
-              this.timeoutResolve()
-              this.timeout = null
-            }
-          })
+          // get potential memoryOptions from website developer
+          this.getMemoryOptions(chatId)
+            .then((memoryOptions) => {
+              if (memoryOptions) {
+                payload.memoryOptions = memoryOptions
+              }
+              return postMessage(channelId, token, payload)
+            })
+            .then(() => {
+              if (this.timeout) {
+                clearTimeout(this.timeout)
+                this.timeoutResolve()
+                this.timeout = null
+              }
+            })
         }
       },
     )
@@ -347,7 +428,9 @@ class Chat extends Component {
               ]}
         </div>
         <Input
+          menu={preferences.menu && preferences.menu.menu}
           onSubmit={this.sendMessage}
+          preferences={preferences}
           onInputHeight={height => this.setState({ inputHeight: height })}
           enableHistoryInput={enableHistoryInput}
           inputPlaceholder={propOr('Write a reply', 'userInputPlaceholder', preferences)}

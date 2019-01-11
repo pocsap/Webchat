@@ -26,7 +26,7 @@ store.dispatch(setLocale(browserLocale));
 const idChatDiv = 'recast-webchat-div'
 
 if (!document.getElementById(idChatDiv)) {
-  const element = document.createElement("div")
+  const element = document.createElement('div')
   element.id = idChatDiv
   document.body.appendChild(element)
 }
