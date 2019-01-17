@@ -26,7 +26,7 @@ const Text = ({ content, style, dropFileAccepted, dropFileRejected, dropped, dnd
   }
 
   return (
-    <div style={style} className={'RecastAppText'}>
+    <div style={style} className={'CaiAppText'}>
       {sanitizeHtml(truncate(respond, 640))
         .replace(/&amp;/g, 'g')
         .replace(/&lt;/g, '<')

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import reduceRight from 'lodash/reduceRight'
+import reduceRight from 'ramda/es/reduceRight'
+import pathOr from 'ramda/es/pathOr'
 
 import Message from 'components/Message'
 import IsTyping from 'components/Message/isTyping'
@@ -15,14 +16,14 @@ class Live extends Component {
     //dndFiles: this.props.dndFiles
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (this.messagesList) {
       this.messagesList.scrollTop = this.messagesList.scrollHeight
     }
     window.addEventListener('resize', this.handleScroll)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.messages.length !== this.props.messages.length) {
       this.setState({ showTyping: true }, () => {
         // FIXME Scroll to the bottom when typing. setTimeout is a bit dirty and can be improved
@@ -35,7 +36,7 @@ class Live extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate (prevProps) {
     if (prevProps.messages.length !== this.props.messages.length) {
       if (this.messagesList) {
         this.messagesList.scrollTop = this.messagesList.scrollHeight
@@ -43,7 +44,7 @@ class Live extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     window.removeEventListener('resize', this.handleScroll)
 
     // Make sure to revoke the data uris to avoid memory leaks
@@ -76,38 +77,18 @@ class Live extends Component {
 
   fmtMessages = () => {
     return reduceRight(
-      this.props.messages,
-      (acc, cur) => {
+      (cur, acc) => {
         const nextMessage = acc[0]
-
         cur.displayIcon = !nextMessage || nextMessage.participant.isBot !== cur.participant.isBot
-
         acc.unshift(cur)
         return acc
       },
       [],
+      this.props.messages,
     )
   }
 
-  //Moved to ../Message/DropArea
-//  onDropAccepted( func, dndFiles ){
-    //Manually add the property "preview", because this property was deleted at Ver 7.0.0 of react-dropzone.
-    // Follwoing code is failed because the property "preview" is undefined.
-    /*
-    this.setState({
-      dndFiles: dndFiles.map( file => ({
-        ...file,
-        preview: URL.createObjectURL(file)
-      }))
-    });
-    */
-    // So directly assign the value
-//    dndFiles.map( file => file.preview = URL.createObjectURL( file ) )
-    
-//    func( dndFiles )
-//  }
-
-  render() {
+  render () {
     const {
       messages,
       sendMessage,
@@ -125,44 +106,29 @@ class Live extends Component {
     } = this.props
     const { showTyping } = this.state
     const lastMessage = messages.slice(-1)[0]
-    const shouldDisplayTyping =
-      lastMessage &&
-      lastMessage.participant.isBot === false &&
-      !lastMessage.retry &&
-      !lastMessage.isSending &&
-      showTyping
+
+    const sendMessagePromiseCondition
+      = lastMessage
+      && (pathOr(false, ['data', 'hasDelay'], lastMessage)
+        ? pathOr(false, ['data', 'hasNextMessage'], lastMessage)
+        : lastMessage.participant.isBot === false)
+    const pollMessageCondition = lastMessage && pathOr(false, ['attachment', 'delay'], lastMessage)
+    const shouldDisplayTyping = !!(
+      lastMessage
+      && (sendMessagePromiseCondition || pollMessageCondition)
+      && !lastMessage.retry
+      && !lastMessage.isSending
+      && showTyping
+    )
 
     return (
       <div
-        className="RecastAppLive"
+        className='CaiAppLive'
         ref={ref => (this.messagesList = ref)}
         onScroll={this.handleScroll}
         style={containerMessagesStyle}
       >
-        {/* Moved to ../Message/DropArea
-        <div>
-          <Dropzone
-            onDropAccepted={this.onDropAccepted.bind( this, dropFileAccepted )}
-            onDropRejected={ dropFileRejected }
-            accept="image/gif, image/jpeg, image/png, image/jpg" >
-            <div>
-              Specify the file or Drag & Dropzone
-              <p>Format: gif/png/jpeg/jpg</p>
-            </div>
-          </Dropzone>
-          <h1>{ dropped ? 'Selected': 'Not selected' } </h1>
-          <h1>{ dndMessage }</h1>
-          { dndFiles.map( file => {
-            return (
-              <div key={ file.preview }>
-                <h1>{ file.name }</h1>
-                <img src={ file.preview } />
-              </div>
-            )
-          })}
-        </div>
-        */}
-        <div className="RecastAppLive--message-container">
+        <div className='CaiAppLive--message-container'>
           {this.fmtMessages().map((message, index) => (
             <Message
               key={message.id}

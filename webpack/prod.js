@@ -1,11 +1,10 @@
 const path = require('path')
-const precss = require('precss')
 const webpack = require('webpack')
 const autoprefixer = require('autoprefixer')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-const env = process.env.NODE_ENV || 'development'
+const env = process.env.NODE_ENV || 'production'
 
 module.exports = {
   // mode (since webpack4) にはproductionとdevelopmentがあります。 
@@ -25,7 +24,8 @@ module.exports = {
   },
 
   module: {
-    rules: [{
+    rules: [
+    {
       test: /\.js$/,
       loader: 'babel-loader',
       exclude: /node-modules/,
@@ -33,11 +33,12 @@ module.exports = {
         presets: ['@babel/preset-react'],
         cacheDirectory: true
       },
-    }, {
+    },
+    {
       test: /\.scss$/,
       use: [
         'style-loader',
-        'css-loader',
+        { loader: 'css-loader', options: { minimize: true } },
         {
           loader: 'postcss-loader',
           options: {
@@ -48,11 +49,13 @@ module.exports = {
         'sass-loader',
       ],
       exclude: /node_modules/,
-    }, {
+    }, 
+    {
       test: /\.css$/,
       use: [ 'style-loader', 'css-loader' ],
       exclude: /node_modules/,
-    },{
+    },
+    {
       test: /\.(png|jpg|gif)$/i,
       use: [ 'url-loader' ],
       exclude: /node_modules/,
@@ -77,8 +80,7 @@ module.exports = {
     */
 
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify(env) }
+      'process.env': { NODE_ENV: JSON.stringify(env) },
     }),
   ],
-
 }

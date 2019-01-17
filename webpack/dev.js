@@ -17,7 +17,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '../dist'),
     filename: 'webchat.js',
-    publicPath: '/dist/'
+    publicPath: '/dist/',
   },
 
   devServer : {
@@ -66,7 +66,7 @@ module.exports = {
       test: /\.(png|jpg|gif)$/i,
       use: [ 'url-loader' ],
       exclude: /node_modules/,
-    }]
+    }],
   },
 
   plugins: [
@@ -75,7 +75,7 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify(env) }
+      'process.env': { NODE_ENV: JSON.stringify(env) },
     }),
   ],
 

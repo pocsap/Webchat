@@ -10,12 +10,13 @@ import './style.scss'
 const Buttons = ({ content, sendMessage, style }) => {
   const { title, buttons } = content
   return (
-    <div className="Buttons">
-      <p className="Buttons--title" style={style}>
+    <div className='Buttons'>
+      <p className='Buttons--title' style={style}>
         {truncate(title, 640)}
       </p>
 
       <div className="Buttons--container">
+        {/* slice function was removed in order to show buttons over than 3 */}
         {buttons.map((b, i) => (
           <Button key={i} button={b} sendMessage={sendMessage} />
         ))}
