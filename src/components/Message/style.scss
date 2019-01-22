@@ -1,7 +1,7 @@
 
 $generalAccentColor: cornflowerblue;
 
-.CaiAppMessageContainer {
+.RecastAppMessageContainer, .CaiAppMessageContainer {
   position: relative;
   display: flex;
   justify-content: flex-end;
@@ -11,7 +11,7 @@ $generalAccentColor: cornflowerblue;
   }
 }
 
-.CaiApp .CaiAppMessage {
+.RecastApp .RecastAppMessage, .CaiApp .CaiAppMessage {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
@@ -75,7 +75,7 @@ $generalAccentColor: cornflowerblue;
    * Text
    */
 
-  .CaiAppText {
+  .RecastAppText, .CaiAppText {
     max-width: 290px;
     padding: 0.8rem;
     border-radius: 3px;
@@ -88,7 +88,7 @@ $generalAccentColor: cornflowerblue;
    * Picture
    */
 
-  .CaiAppPicture {
+  .RecastAppPicture, .CaiAppPicture {
     width: 270px;
     max-height: 270px;
 
@@ -100,7 +100,7 @@ $generalAccentColor: cornflowerblue;
    * QuickReplies
    */
 
-  .CaiAppQuickReplies {
+  .RecastAppQuickReplies, .CaiAppQuickReplies {
     display: flex;
     flex-direction: column;
 
@@ -154,7 +154,7 @@ $generalAccentColor: cornflowerblue;
    * Card
    */
 
-  .CaiAppCard {
+  .RecastAppCard, .CaiAppCard {
     width: 270px;
 
     border: 1px solid lightgrey;
@@ -190,7 +190,7 @@ $generalAccentColor: cornflowerblue;
    * List
    */
 
-  .CaiAppList {
+  .RecastAppList, .CaiAppList {
     border: 1px solid lightgrey;
     border-radius: 3px;
 
@@ -198,7 +198,7 @@ $generalAccentColor: cornflowerblue;
       border-top: 1px solid lightgrey;
     }
 
-    .CaiAppListElement {
+    .RecastAppListElement, .CaiAppListElement {
       display: flex;
       width: 290px;
 
@@ -241,7 +241,7 @@ $generalAccentColor: cornflowerblue;
       }
     }
 
-    .CaiAppListElement + .CaiAppListElement {
+    .RecastAppListElement + .RecastAppListElement, .CaiAppListElement + .CaiAppListElement {
       border-top: 1px solid lightgrey;
     }
   }
@@ -262,6 +262,8 @@ $generalAccentColor: cornflowerblue;
   * Slider
   */
 
+.RecastAppSlider,
+.Slider,
 .CaiAppSlider,
 .Slider {
   max-width: 300px;

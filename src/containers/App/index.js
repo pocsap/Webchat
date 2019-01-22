@@ -167,7 +167,7 @@ class App extends Component {
     const { expanded } = this.state
 
     return (
-      <div className='CaiApp'>
+      <div className='RecastApp CaiApp'>
         <link
           rel='stylesheet'
           type='text/css'

@@ -55,7 +55,7 @@ class QuickReplies extends Component {
 
     return (
       <div
-        className='CaiAppQuickReplies'
+        className='RecastAppQuickReplies CaiAppQuickReplies'
         ref={ref => {
           this.container = ref
         }}
@@ -73,7 +73,7 @@ class QuickReplies extends Component {
             draggable={false}
             prevArrow={<PrevArrow />}
             nextArrow={<NextArrow />}
-            className='CaiAppSlider CaiAppQuickReplies--slider'
+            className='RecastAppSlider RecastAppQuickReplies--slider CaiAppSlider CaiAppQuickReplies--slider'
           >
             {buttons.map((b, i) => (
               <div
@@ -81,7 +81,7 @@ class QuickReplies extends Component {
                   this.buttons[i] = ref
                 }}
                 key={i}
-                className='CaiAppQuickReplies--button'
+                className='RecastAppQuickReplies--button CaiAppQuickReplies--button'
                 onClick={() => this.doSendMessage({ type: 'quickReply', content: b })}
                 /*  I don't know why but the following style does not work! 
                     And If you eliminate the following style statement, arrow button of quick reply is gone.
