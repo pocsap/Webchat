@@ -10,6 +10,10 @@ import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-red
 import { I18n } from 'react-redux-i18n'
 import translationObjects from './i18n/translationObjects'
 
+/*
+import myEnv from 'myEnv.js'
+console.log("myEnv is ", JSON.stringify(myEnv))
+*/
 
 const browserLocale = (window.navigator.languages && window.navigator.languages[0]) ||
                       window.navigator.language ||

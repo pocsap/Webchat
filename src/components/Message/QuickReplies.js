@@ -83,8 +83,7 @@ class QuickReplies extends Component {
                 key={i}
                 className='CaiAppQuickReplies--button'
                 onClick={() => this.doSendMessage({ type: 'quickReply', content: b })}
-                {/* 
-                    I don't know why but the following style does not work! 
+                /*  I don't know why but the following style does not work! 
                     And If you eliminate the following style statement, arrow button of quick reply is gone.
                     !!! This strange behavior might be happened due to lack of curly bracket surrounds this comment.
                     !!! Check this later. 
@@ -92,8 +91,7 @@ class QuickReplies extends Component {
                   style={{
                     border: `1px solid ${style.accentColor}`,
                     color: style.accentColor,
-                  }}
-                */}
+                  }} */
                   style={customStyle}
               >
                 {truncate(b.title, 20)}
