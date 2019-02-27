@@ -40,10 +40,10 @@ class App extends Component {
   }
 
   componentDidMount () {
-    const { channelId, token, preferences, noCredentials, onRef } = this.props
+    const { channelId, token, preferences, noCredentials, onRef, ssoUserId } = this.props
     const credentials = getCredentialsFromCookie()
     const payload = { channelId, token }
-    const firstMessage = (preferences.welcomeMessage) || I18n.t('application.welcome', {headerTitle: preferences.headerTitle })
+    const firstMessage = (preferences.welcomeMessage) || I18n.t('application.welcome', { userId: ssoUserId, headerTitle: preferences.headerTitle })
 
     if (onRef) {
       onRef(this)
@@ -146,6 +146,24 @@ class App extends Component {
   }
 */
 
+  // !!! Not used currently !!!
+  setCaiMemory = ( memObj, doesMerge ) => {
+    console.log( `>>> "setCaiMessage is called, handed over parameters doesMerge is ${doesMerge} and memObj is `, memObj )
+    window.webchatMethods = {
+      getMemory: ( conversationId ) => {
+        const memory = memObj
+        return { memory, merge: doesMerge }
+      }
+    }
+  }
+
+  // !!! Not used currently !!!
+  undefineWebchatMethod = () => {
+    console.log( `>>> "undefineWebchatMethod is called. window.webchatMethods is set as undefined.` )
+    window.webchatMethods = undefined
+    //delete window.webchatMethods
+  }
+
   render () {
     const {
       preferences,
@@ -204,6 +222,8 @@ class App extends Component {
           getLastMessage={getLastMessage}
           enableHistoryInput={enableHistoryInput}
           defaultMessageDelay={defaultMessageDelay}
+          setCaiMemory={this.setCaiMemory}
+          undefineWebchatMethod={this.undefineWebchatMethod}
         />
       </div>
     )
@@ -232,6 +252,9 @@ App.propTypes = {
   clearMessagesOnclose: PropTypes.bool,
   enableHistoryInput: PropTypes.bool,
   defaultMessageDelay: PropTypes.number,
+  setCaiMemory: PropTypes.func,
+  undefineWebchatMethod: PropTypes.func,
+  ssoUserId: PropTypes.string,
 }
 
 export default App

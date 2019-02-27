@@ -2,7 +2,10 @@
 	"application":{
 		"title": "English Title",
 	  	"hello": "Hello, %{name}!",
-	  	"welcome": "Welcome to %{headerTitle}!\nPlease input the question!"
+	  	"welcome": "Hello %{userId}!\nWelcome to %{headerTitle}!\nPlease input the question!"
+ 	},
+ 	"message":{
+ 		"reset": "Please reset the chat contents."
  	},
  	"dropArea":{
  		"areaMessage": "Select files by clicking here, or drop files to here directly.",

@@ -192,7 +192,7 @@ class Chat extends Component {
     )
   }
 
-  sendMessage = (attachment, userMessage) => {
+  sendMessage = ( attachment, userMessage, caiMemOption ) => {
     const {
       token,
       channelId,
@@ -270,6 +270,11 @@ class Chat extends Component {
               if (memoryOptions) {
                 payload.memoryOptions = memoryOptions
               }
+              else if (caiMemOption){
+                //If memoryOptions exists, caiMemOption is ignored.
+                payload.memoryOptions = caiMemOption
+              }
+
               return postMessage(channelId, token, payload)
             })
             .then(() => {
@@ -340,9 +345,20 @@ class Chat extends Component {
   }
 
   resetWebchat = () => {
-    this.props.dropFileReset()
-    this.props.removeAllMessages()
-    this.sendMessage( { type: 'text', content: 'resetdata' } )
+    const {
+      dropFileReset,
+      removeAllMessages,
+      setCaiMemory,
+      undefineWebchatMethod,
+    } = this.props
+    const caiMemOption = { memory: {}, merge: false }
+
+    dropFileReset()
+    removeAllMessages()
+    //setCaiMemory( { webchatUser: 'suyamat'}, false )
+    this.sendMessage( { type: 'text', content: I18n.t('message.reset') }, null, caiMemOption )
+    //undefineWebchatMethod()
+
   }
 
   onClickShowInfo = message => {

@@ -2,8 +2,11 @@
 	"application":{
 		"title": "日本語タイトル",
       	"hello": "こんにちは、%{name}!",
-      	"welcome": "ようこそ %{headerTitle} へ!\n質問を入力してください。"
+      	"welcome": "こんにちは %{userId} さん！\nようこそ %{headerTitle} へ！\n質問を入力してください。"
     },
+    "message":{
+ 		"reset": "チャット内容をリセットしてください。"
+ 	},
  	"dropArea":{
  		"areaMessage": "ここをクリックしてファイルを選択するか、直接ファイルをここにドロップしてください。",
  		"acceptedExtentions": "選択可能なファイル: gif/png/jpeg/jpg"

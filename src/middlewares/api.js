@@ -20,6 +20,7 @@ export default store => next => action => {
     bodyData = data
   } 
   else {
+    //i.e OWN
     targetUrl = `${config.ownUrl}${url}`
 
     data.map( file => {
