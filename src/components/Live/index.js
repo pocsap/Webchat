@@ -106,19 +106,30 @@ class Live extends Component {
     } = this.props
     const { showTyping } = this.state
     const lastMessage = messages.slice(-1)[0]
-
     const sendMessagePromiseCondition
       = lastMessage
       && (pathOr(false, ['data', 'hasDelay'], lastMessage)
         ? pathOr(false, ['data', 'hasNextMessage'], lastMessage)
         : lastMessage.participant.isBot === false)
+
     const pollMessageCondition = lastMessage && pathOr(false, ['attachment', 'delay'], lastMessage)
+
+    // Modification to show the typing icons i.e "...", even if the reply comes from Node takes long time.
+    // Eliminate "&& showTyping" from the condition.
+    /*
     const shouldDisplayTyping = !!(
       lastMessage
       && (sendMessagePromiseCondition || pollMessageCondition)
       && !lastMessage.retry
       && !lastMessage.isSending
       && showTyping
+    )
+    */
+    const shouldDisplayTyping = !!(
+      lastMessage
+      && (sendMessagePromiseCondition || pollMessageCondition)
+      && !lastMessage.retry
+      && !lastMessage.isSending
     )
 
     return (

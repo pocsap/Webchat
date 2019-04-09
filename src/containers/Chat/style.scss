@@ -48,6 +48,9 @@
     transition: opacity 0.3s, visibility 0.3s;
   }
 }
+
+// Control chat window size >> Comment out here if you want to show the full size of chat window even in the big screen.
+// Change the style of Live too, in order to change the inner window.
 /*
 @media only screen and (min-width: 420px) and (min-height: 575px) {
   .RecastApp .RecastAppChat, .CaiApp .CaiAppChat {
@@ -66,6 +69,23 @@
   }
 }
 */
+// Because I just want to limit only width, eliminated the specification of height from above.
+@media only screen and (min-width: 420px) and (min-height: 575px) {
+  .RecastApp .RecastAppChat, .CaiApp .CaiAppChat {
+    right: 10px;
+    bottom: 10px;
+    border-radius: 3px;
+    top: auto;
+    left: auto;
+    width: 370px;
+    box-shadow: 0 5px 40px rgba(0, 0, 0, 0.16);
+
+    &--slogan {
+      margin-bottom: 0;
+    }
+  }
+}
+
 @media only screen and (max-width: 420px) {
   .RecastApp .RecastAppChat, .CaiApp .CaiAppChat {
     &--slogan {
