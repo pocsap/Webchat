@@ -60,7 +60,7 @@ const ssoUserId = Cookies.get( ssoCookieID ) ? base64.decode( Cookies.get( ssoCo
 console.log( `>>> ssoUserId = ${ssoUserId} <<<` )
 
 // Delete the cookie in order to test many times.
-Cookies.expire( ssoCookieID )
+//Cookies.expire( ssoCookieID )
 //<<< End of Cookie test <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
