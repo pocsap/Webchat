@@ -350,14 +350,16 @@ class Chat extends Component {
       removeAllMessages,
       setCaiMemory,
       undefineWebchatMethod,
+      ssoUserId,
     } = this.props
-    const caiMemOption = { memory: {}, merge: false }
+    const caiMemOption = { memory: { ssoUserId: ssoUserId }, merge: false }
 
     dropFileReset()
     removeAllMessages()
     //setCaiMemory( { webchatUser: 'suyamat'}, false )
     this.sendMessage( { type: 'text', content: I18n.t('message.reset') }, null, caiMemOption )
-    //undefineWebchatMethod()
+    undefineWebchatMethod()
+    console.log( 'window.webchatMethods should be nothing here: ', window.webchatMethods )
 
   }
 
@@ -522,6 +524,7 @@ Chat.propTypes = {
   dropFileAccept: PropTypes.func,
   dropFileReject: PropTypes.func,
   defaultMessageDelay: PropTypes.number,
+  ssoUserId: PropTypes.string,
 }
 
 export default Chat

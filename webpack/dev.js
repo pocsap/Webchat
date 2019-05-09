@@ -32,6 +32,7 @@ module.exports = {
         poll            : true,                      // ファイルの更新が正しく検知されない場合に利用
         ignored: /node_modules/
     },
+    disableHostCheck: true,                          // webpack-dev-serverで起動したアプリが「Invalid Host header」と表示される場合の対処法 (https://qiita.com/yutasuzuki0206/items/542390f7a046772262fe)
   },
 
   module: {

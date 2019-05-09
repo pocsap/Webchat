@@ -69,6 +69,9 @@ class App extends Component {
     this.props.setFirstMessage(firstMessage)
 
     this.props.setCredentials(payload)
+
+    // CAI memory setting function is assigned here.
+    this.setCaiMemory( { ssoUserId: ssoUserId }, true )
   }
 
   componentWillReceiveProps (nextProps) {
@@ -146,7 +149,13 @@ class App extends Component {
   }
 */
 
-  // !!! Not used currently !!!
+  // !!! The following function can set the CAI Memory, 
+  // but once the memory management code is assigned to "window.webchatMethods", it is called every times whenever the chat is sent.
+  // Therefore assigning the code to "window.webchatMethods" is not really convenient.
+  // However the primitive parameter like user ID would be possible to be set by this, 
+  // and once this is set, it is not initialized even if the memory is reset later.
+  // This is because "window.webchatMethods" is always called, so it is also called after the reset message.
+  // "window.webchatMethods" is deleted when the reset button is pushed.
   setCaiMemory = ( memObj, doesMerge ) => {
     console.log( `>>> "setCaiMessage is called, handed over parameters doesMerge is ${doesMerge} and memObj is `, memObj )
     window.webchatMethods = {
@@ -157,7 +166,7 @@ class App extends Component {
     }
   }
 
-  // !!! Not used currently !!!
+  // This is called by resetWebchat function of Chat, when the reset button is pushed.
   undefineWebchatMethod = () => {
     console.log( `>>> "undefineWebchatMethod is called. window.webchatMethods is set as undefined.` )
     window.webchatMethods = undefined
@@ -181,6 +190,7 @@ class App extends Component {
       getLastMessage,
       enableHistoryInput,
       defaultMessageDelay,
+      ssoUserId,
     } = this.props
     const { expanded } = this.state
 
@@ -224,6 +234,7 @@ class App extends Component {
           defaultMessageDelay={defaultMessageDelay}
           setCaiMemory={this.setCaiMemory}
           undefineWebchatMethod={this.undefineWebchatMethod}
+          ssoUserId={ssoUserId}
         />
       </div>
     )
