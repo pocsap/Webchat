@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import './style.scss'
+import imgClear from '../../../img/myReset.png'
 
 const Header = ({ closeWebchat, resetWebchat, preferences, logoStyle }) => (
   <div
@@ -16,7 +17,9 @@ const Header = ({ closeWebchat, resetWebchat, preferences, logoStyle }) => (
     <div className='RecastAppHeader--title CaiAppHeader--title'>{preferences.headerTitle}</div>
 
     <div className="RecastAppHeader--btn CaiAppHeader--btn" onClick={ resetWebchat }>
-      <img className="myIcon" src="./img/myReset.png" />
+      {/* <img className="myIcon" src="./img/myReset.png" /> */}
+      <img className="myIcon" src={imgClear} />
+
     </div>
 
     <div className='RecastAppHeader--btn CaiAppHeader--btn' onClick={closeWebchat}>
