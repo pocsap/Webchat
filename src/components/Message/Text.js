@@ -1,17 +1,45 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import sanitizeHtml from 'sanitize-html-react'
+import ReactMarkdown from 'react-markdown'
 
 import DateTime from 'components/Message/DateTime/ReactDateTime.js'
 import DropArea from './DropArea'
 
 import { truncate } from 'helpers'
 
+import { I18n } from 'react-redux-i18n'
+
 import './style.scss'
 
 
-const Text = ({ content, style, dropFileAccepted, dropFileRejected, dropped, dndFiles, dndMessage }) => {
+const allowedMarkdownTypes = [
+  'paragraph',
+  'text',
+  'emphasis',
+  'strong',
+  'link',
+  'blockquote',
+  'delete',
+  'list',
+  'listItem',
+  'heading',
+  'code',
+  'thematicBreak',
+  'table',
+  'tableHead',
+  'tableBody',
+  'tableRow',
+  'tableCell',
+]
+
+const Text = ({ content, style, isMarkdown, dropFileAccepted, dropFileRejected, dropped, dndFiles, dndMessage }) => {
+
   let respond
+
+  if (typeof isMarkdown !== 'boolean') {
+    isMarkdown = false
+  }
 
   if (typeof content === 'string') {
     respond = content
@@ -25,20 +53,32 @@ const Text = ({ content, style, dropFileAccepted, dropFileRejected, dropped, dnd
     respond = ''
   }
 
+  const compiledResponse = sanitizeHtml(truncate(respond, 640), {
+    allowedTags: ['b', 'i', 'em', 'strong', 'a'],
+  })
+    .replace(/&amp;/g, 'g')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+
   return (
     <div style={style} className={'RecastAppText CaiAppText'}>
-      {sanitizeHtml(truncate(respond, 640))
-        .replace(/&amp;/g, 'g')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')}
+      {isMarkdown ? (
+        <ReactMarkdown
+          source={compiledResponse}
+          allowedTypes={allowedMarkdownTypes}
+        />
+        ) : (
+          compiledResponse
+        )}
+
       <div>
-        { content === '発生日時を入力してください' && <DateTime /> }
-        { content === 'ファイルを添付してください' && <DropArea 
-                                                dropFileAccepted={ dropFileAccepted }
-                                                dropFileRejected={ dropFileRejected }
-                                                dropped={ dropped }
-                                                dndFiles={ dndFiles }
-                                                dndMessage={ dndMessage }/> }
+        { content === I18n.t('triggerPhrase.calendar') && <DateTime /> }
+        { content === I18n.t('triggerPhrase.dropArea') && <DropArea 
+                                                            dropFileAccepted={ dropFileAccepted }
+                                                            dropFileRejected={ dropFileRejected }
+                                                            dropped={ dropped }
+                                                            dndFiles={ dndFiles }
+                                                            dndMessage={ dndMessage }/> }
       </div>
     </div>
   )
@@ -47,6 +87,7 @@ const Text = ({ content, style, dropFileAccepted, dropFileRejected, dropped, dnd
 Text.propTypes = {
   style: PropTypes.object,
   content: PropTypes.string,
+  isMarkdown: PropTypes.bool,
 }
 
 export default Text

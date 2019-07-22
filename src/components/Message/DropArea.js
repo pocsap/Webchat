@@ -69,12 +69,12 @@ class DropArea extends Component {
               <p><Translate value="dropArea.acceptedExtentions"/></p>
             </div>
           </Dropzone>
-          <h1>{ dropped ? 'Selected': 'Not selected' } </h1>
-          <h1>{ dndMessage }</h1>
+          <p>{ dropped ? 'Selected': 'Not selected' } </p>
+          <p>{ dndMessage }</p>
           { dndFiles.map( file => {
             return (
               <div key={ file.preview }>
-                <h1>{ file.name }</h1>
+                <p>{ file.name }</p>
                 <img src={ file.preview } />
               </div>
             )

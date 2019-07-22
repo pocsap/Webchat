@@ -15,5 +15,9 @@
  		"sendingDropFiles": "Sending dropped files to the middleware server.",
  		"sendFilesSuccess": "Dropped files are sent to the middleware server successfully.",
  		"sendFilesFailed": "Sending dropped files to the middleware server is failed."
+ 	},
+ 	"triggerPhrase":{
+ 		"calendar": "Please input the date & time of occurence.",
+ 		"dropArea": "Please select (or drop) the files to atach."
  	}
 }
