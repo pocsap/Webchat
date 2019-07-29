@@ -94,6 +94,7 @@ class Chat extends Component {
     if ( show && msgObj ){
       if ( msgObj.isWelcomeMessage || messages !== this.state.messages ){
         ssu.text = msgObj.attachment.content.title || msgObj.attachment.content
+        ssu.text = ssu.text.replace( /\*/g, "" )
         ssi.speak(ssu)
       }
     }
