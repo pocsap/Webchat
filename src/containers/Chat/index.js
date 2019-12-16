@@ -24,6 +24,7 @@ import Live from 'components/Live'
 import Input from 'components/Input'
 
 import { I18n } from 'react-redux-i18n'
+import Cookies from 'cookies-js'
 
 import './style.scss'
 
@@ -75,11 +76,13 @@ class Chat extends Component {
     if (!sendMessagePromise && show) {
       this.doMessagesPolling()
     }
+
   }
 
   componentWillReceiveProps (nextProps) {
     const { messages, show } = nextProps
-    // >>> Start of additional function of voice message.
+
+    //>>>>>>>>>> Start of additional function of voice message. >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     let ssu = new SpeechSynthesisUtterance(),
         ssi = window.speechSynthesis,
         voices = ssi.getVoices(),
@@ -88,8 +91,15 @@ class Chat extends Component {
     // Sometimes it never speak anything suddenly even though the code is executed without error.
     // To avoid this case, make it stop by the following cancel method for just in case. 
     if ( !ssi.speaking || ssi.pending ) ssi.cancel()
+    
     // ssu.voice = voices[7] // voices[7]:Google 日本人 ja-JP // If you set this value, the pronunciation became very bad for Japanese.
-    ssu.lang = 'ja-JP'
+    switch( this.props.browserLocale ){
+      case 'ja':
+        ssu.lang = 'ja-JP';
+        break;
+      case 'en':
+        ssu.lang = 'en-US'
+    }
     
     if ( show && msgObj ){
       if ( msgObj.isWelcomeMessage || messages !== this.state.messages ){
@@ -98,7 +108,7 @@ class Chat extends Component {
         ssi.speak(ssu)
       }
     }
-    // <<< End of additional function of voice message.
+    //<<<<<<<<<< End of additional function of voice message. <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     if (messages !== this.state.messages) {
       this.setState({ messages }, () => {
@@ -203,6 +213,7 @@ class Chat extends Component {
       addUserMessage,
       addBotMessage,
       defaultMessageDelay,
+      setCaiMemory,
     } = this.props
     const payload = { message: { attachment }, chatId }
 
@@ -221,6 +232,19 @@ class Chat extends Component {
         attachment: { type: 'text', content: userMessage },
       }
     }
+
+    //>>> Start of user id manipulation.
+    const msgContent = attachment.content
+    
+    if ( this.state.messages.length === 3 
+      && attachment.type === 'text' 
+      && msgContent.length >= 5
+      && msgContent.length <= 10 ){
+
+      Cookies.set( 'INPUT_USERID', msgContent )
+      setCaiMemory( { ssoUserId: msgContent }, true )
+    }
+    //<<< End of user id manipulation.
 
     this.setState(
       prevState => ({ messages: concat(prevState.messages, [backendMessage]) }),
@@ -359,8 +383,8 @@ class Chat extends Component {
     removeAllMessages()
     //setCaiMemory( { webchatUser: 'suyamat'}, false )
     this.sendMessage( { type: 'text', content: I18n.t('message.reset') }, null, caiMemOption )
-    undefineWebchatMethod()
-    console.log( 'window.webchatMethods should be nothing here: ', window.webchatMethods )
+    //undefineWebchatMethod()
+    //console.log( 'window.webchatMethods should be nothing here: ', window.webchatMethods )
 
   }
 

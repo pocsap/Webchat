@@ -2,14 +2,16 @@
 	"application":{
 		"title": "English Title",
 	  	"hello": "Hello, %{name}!",
-	  	"welcome": "Hello %{userId}!\nWelcome to %{headerTitle}!\nPlease input the question!"
+	  	"welcome": "Hello!\nWelcome to %{headerTitle}!",
+	  	"welcomeWithName": "Hello %{userId}!\nWelcome to %{headerTitle}!"
  	},
  	"message":{
+ 		"forLang&Intent": "[Auto Transmitted Message] This chat is handled in English based on the browser locale.",
  		"reset": "Please reset the chat contents."
  	},
  	"dropArea":{
  		"areaMessage": "Select files by clicking here, or drop files to here directly.",
- 		"acceptedExtentions": "Accepted Format: gif/png/jpeg/jpg"
+ 		"acceptedExtentions": "If it is rejected, please make a zip file to include it, then drop the zip file."
  	},
  	"botMessage":{
  		"sendingDropFiles": "Sending dropped files to the middleware server.",
@@ -17,7 +19,7 @@
  		"sendFilesFailed": "Sending dropped files to the middleware server is failed."
  	},
  	"triggerPhrase":{
- 		"calendar": "Please input the date & time of occurence.",
- 		"dropArea": "Please select (or drop) the files to atach."
+ 		"calendar": "Please input the date & time of occurrence.",
+ 		"dropArea": "Please select (or drop) the files to attach."
  	}
 }

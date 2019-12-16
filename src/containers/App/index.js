@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import Chat from 'containers/Chat'
 import Expander from 'components/Expander'
-import { setFirstMessage, removeAllMessages } from 'actions/messages'
+import { setFirstMessage, removeAllMessages, postMessage } from 'actions/messages'
 import { setCredentials, createConversation } from 'actions/conversation'
 import { storeCredentialsInCookie, getCredentialsFromCookie } from 'helpers'
 
@@ -32,6 +32,7 @@ const NO_LOCALSTORAGE_MESSAGE
     setFirstMessage,
     createConversation,
     removeAllMessages,
+    postMessage,
   },
 )
 class App extends Component {
@@ -43,7 +44,12 @@ class App extends Component {
     const { channelId, token, preferences, noCredentials, onRef, ssoUserId } = this.props
     const credentials = getCredentialsFromCookie(channelId)
     const payload = { channelId, token }
-    const firstMessage = (preferences.welcomeMessage) || I18n.t('application.welcome', { userId: ssoUserId, headerTitle: preferences.headerTitle })
+    const firstMessageContetns = ssoUserId ? I18n.t('application.welcomeWithName', { userId: ssoUserId, headerTitle: preferences.headerTitle })
+                                           : I18n.t('application.welcome', { headerTitle: preferences.headerTitle })
+    const firstMessage = (preferences.welcomeMessage) || firstMessageContetns
+
+    const msgAttachment = { attachment: { type: "text", content: I18n.t( 'message.forLang&Intent' ) } } 
+  
 
     if (onRef) {
       onRef(this)
@@ -58,20 +64,21 @@ class App extends Component {
     } else {
       this.props.createConversation(channelId, token).then(({ id, chatId }) => {
         storeCredentialsInCookie(chatId, id, preferences.conversationTimeToLive, channelId)
+
+        const customPayload = { chatId: chatId, message: msgAttachment }
+        this.props.postMessage( channelId, token, customPayload )
       })
     }
 
-    /*
-    if (preferences.welcomeMessage) {
-      this.props.setFirstMessage(preferences.welcomeMessage)
-    }
-    */
     this.props.setFirstMessage(firstMessage)
 
     this.props.setCredentials(payload)
 
     // CAI memory setting function is assigned here.
-    this.setCaiMemory( { ssoUserId: ssoUserId }, true )
+    if ( ssoUserId ){
+      this.setCaiMemory( { ssoUserId: ssoUserId }, true )
+    }
+
   }
 
   componentWillReceiveProps (nextProps) {
@@ -191,6 +198,7 @@ class App extends Component {
       enableHistoryInput,
       defaultMessageDelay,
       ssoUserId,
+      browserLocale,
     } = this.props
     const { expanded } = this.state
 
@@ -235,6 +243,7 @@ class App extends Component {
           setCaiMemory={this.setCaiMemory}
           undefineWebchatMethod={this.undefineWebchatMethod}
           ssoUserId={ssoUserId}
+          browserLocale={browserLocale}
         />
       </div>
     )
@@ -266,6 +275,7 @@ App.propTypes = {
   setCaiMemory: PropTypes.func,
   undefineWebchatMethod: PropTypes.func,
   ssoUserId: PropTypes.string,
+  browserLocale: PropTypes.string,
 }
 
 export default App

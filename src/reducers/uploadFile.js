@@ -43,7 +43,7 @@ export default handleActions(
             ...state,
             dropped: false, 
             dndFiles: [], 
-            dndMessage: 'gif/png/jpeg/jpg形式のファイルのみ選択してください' 
+            dndMessage: 'This file type cannot be accepted.' 
         }
     },
 

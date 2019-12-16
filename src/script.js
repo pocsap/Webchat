@@ -32,7 +32,8 @@ store.dispatch(setLocale(browserLocale));
 //>>> Start of Cookie test >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // These values should be taken from the cookie.
 // These values are just for test.
-const ssoCookieID = 'MYSAPSSO2';
+const ssoCookieID = 'MYSAPSSO2'
+const inputUserID = 'INPUT_USERID'
 const mySapSso2_1 = "AjQxMDMBABhJADAAMQA5ADYANgA3ACAAIAAgACAAIAACAAYwADAAMQADABBHAFQAUAAgACAAIAAgACAABAAYMgAwADEAOAAwADgAMgAxADAANQAzADMABQAEAAAACAYAAlgACQACRQD%2fAU8wggFLBgkqhkiG9w0BBwKgggE8MIIBOAIBATELMAkGBSsOAwIaBQAwCwYJKoZIhvcNAQcBMYIBFzCCARMCAQEwaTBkMQswCQYDVQQGEwJERTEcMBoGA1UEChMTU0FQIFRydXN0IENvbW11bml0eTETMBEGA1UECxMKU0FQIFdlYiBBUzEUMBIGA1UECxMLSTAwMjAxMzU2ODIxDDAKBgNVBAMTA0dUUAIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTgwODIxMDUzMzQzWjAjBgkqhkiG9w0BCQQxFgQU6PGQdsr%2fZ8yzOA8tlZchqx1e9iMwCQYHKoZIzjgEAwQuMCwCFF41L8%2fpbQJCRoh3Jb5jmeUeXD4gAhRCPcUgQaiLlU4M%2fAUVOzWnV3C5Qw%3d%3d"
 const mySapSso2_2 = "AjExMDAgAA5wb3J0YWw6STAxOTY2N4gAE2Jhc2ljYXV0aGVudGljYXRpb24BAAdJMDE5NjY3AgADMDAwAwADSU5QBAAMMjAxOTAyMjYwNjMzBQAEAAAACAoAB0kwMTk2Njf%2FAQUwggEBBgkqhkiG9w0BBwKggfMwgfACAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3DQEHATGB0DCBzQIBATAiMB0xDDAKBgNVBAMTA0lOUDENMAsGA1UECxMESjJFRQIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTkwMjI2MDYzMzI5WjAjBgkqhkiG9w0BCQQxFgQUAMoZKPNj8m3gNYZKMwYmQq5z2tMwCQYHKoZIzjgEAwQvMC0CFA!XVMDcgECP!iCyUxbK3Noj%2FPi9AhUAsM46NVYGEuKY!ZcweUMONyjBKgQ%3D"
 const fukudaSso   = "AjExMDAgAA5wb3J0YWw6STAyMTI1OYgAE2Jhc2ljYXV0aGVudGljYXRpb24BAAdJMDIxMjU5AgADMDAwAwADSU5QBAAMMjAxOTAyMjcwNTM2BQAEAAAACAoAB0kwMjEyNTn%2FAQUwggEBBgkqhkiG9w0BBwKggfMwgfACAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3DQEHATGB0DCBzQIBATAiMB0xDDAKBgNVBAMTA0lOUDENMAsGA1UECxMESjJFRQIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTkwMjI3MDUzNjUxWjAjBgkqhkiG9w0BCQQxFgQUlXYFgzRxZi3jidRVE1U4CrQza4swCQYHKoZIzjgEAwQvMC0CFQCwLqANKK25Ma9%2FVwi7s9YfQRxyawIUMo8m!AePWyHr1ui43qEgEcTXYLQ%3D"
@@ -51,13 +52,8 @@ const
   mySsoId_2 = decodeSso2_2.slice(15,22),
   fukudaSsoId = decodeFukudaSso.slice(15,22);
 
-console.log(`>>> SSO1 = ${mySsoId_1} <<<`)
-console.log(`>>> SSO2 = ${mySsoId_2} <<<`)
-console.log(`>>> Fukuda SSO2 = ${fukudaSsoId} <<<`)
-
-const ssoUserId = Cookies.get( ssoCookieID ) ? base64.decode( Cookies.get( ssoCookieID ) ).slice(15, 22) : "Guest"
-
-console.log( `>>> ssoUserId = ${ssoUserId} <<<` )
+//const ssoUserId = Cookies.get( ssoCookieID ) ? base64.decode( Cookies.get( ssoCookieID ) ).slice(15, 22) : "Guest"
+const ssoUserId = Cookies.get( inputUserID ) || ''
 
 // Delete the cookie in order to test many times.
 //Cookies.expire( ssoCookieID )
@@ -83,7 +79,7 @@ if (root && channelId && token) {
   getChannelPreferences(channelId, token).then(preferences => {
     ReactDOM.render(
       <Provider store={store}>
-        <App token={token} channelId={channelId} preferences={preferences} ssoUserId={ssoUserId} />
+        <App token={token} channelId={channelId} preferences={preferences} ssoUserId={ssoUserId} browserLocale={browserLocale} />
       </Provider>,
       root,
     )

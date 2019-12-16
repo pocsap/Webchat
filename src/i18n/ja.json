@@ -2,14 +2,16 @@
 	"application":{
 		"title": "日本語タイトル",
       	"hello": "こんにちは、%{name}!",
-      	"welcome": "こんにちは %{userId} さん！\nようこそ %{headerTitle} へ！\n質問を入力してください。"
+      	"welcome": "こんにちは！\nようこそ %{headerTitle} へ！",
+      	"welcomeWithName": "こんにちは %{userId} さん！\nようこそ %{headerTitle} へ！"
     },
     "message":{
+    	"forLang&Intent": "[自動送信メッセージ] ブラウザ言語から判断して日本語で処理するようにします。",
  		"reset": "チャット内容をリセットしてください。"
  	},
  	"dropArea":{
  		"areaMessage": "ここをクリックしてファイルを選択するか、直接ファイルをここにドロップしてください。",
- 		"acceptedExtentions": "選択可能なファイル: gif/png/jpeg/jpg"
+ 		"acceptedExtentions": "もしファイルが拒否された場合は、Zipファイルにまとめて、それをドロップしてください。"
     },
     "botMessage":{
  		"sendingDropFiles": "ドロップされたファイルを中間サーバーに転送しています。",
@@ -18,6 +20,6 @@
  	},
  	"triggerPhrase":{
  		"calendar": "**発生日時**を入力してください",
- 		"dropArea": "添付するファイルを選択、もしくはドロップエリアにドロップしてください"
+ 		"dropArea": "添付するファイルを選択、もしくはドロップエリアにドロップしてください。"
  	}
 }
