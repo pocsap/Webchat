@@ -62,7 +62,7 @@ class DropArea extends Component {
           <Dropzone
             onDropAccepted={this.onDropAccepted.bind( this, dropFileAccepted )}
             onDropRejected={ dropFileRejected }
-            accept=".avi, .csv, .doc, .docx, .elg, .err, .gif, .gz, .htm, .html, .ini, .jar, .jpg, .log, .mp4, .msg, .pdf, .png, .ppt, .pptx, .rar, .rtf, .sar, .tar, .tgz, .tif, .trc, .txt, .wav, .xls, .xlsx, .xml, .xsl, .zip" >
+            accept=".doc, .docx, .gif, .gz, .htm, .html, .jar, .jpg, .msg, .pdf, .png, .ppt, .pptx, .rtf, .tif, .txt, .xls, .xlsx, .xml, .zip" >
             <div className={'DropArea'}>
               <Translate value="dropArea.areaMessage"/>
               <p> </p>

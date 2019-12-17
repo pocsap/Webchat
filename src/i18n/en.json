@@ -11,7 +11,7 @@
  	},
  	"dropArea":{
  		"areaMessage": "Select files by clicking here, or drop files to here directly.",
- 		"acceptedExtentions": "If it is rejected, please make a zip file to include it, then drop the zip file."
+ 		"acceptedExtentions": "If it is rejected, please attach the file after the creation of incident."
  	},
  	"botMessage":{
  		"sendingDropFiles": "Sending dropped files to the middleware server.",

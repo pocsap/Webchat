@@ -233,18 +233,22 @@ class Chat extends Component {
       }
     }
 
-    //>>> Start of user id manipulation.
+    //>>> Start of user id manipulation. >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     const msgContent = attachment.content
+    const rePattern = /^[0-9a-zA-Z]*$/
     
-    if ( this.state.messages.length === 3 
+    if ( 
+      this.state.messages.length === 3 
       && attachment.type === 'text' 
       && msgContent.length >= 5
-      && msgContent.length <= 10 ){
-
+      && msgContent.length <= 10
+      && rePattern.test(msgContent) 
+      )
+    {
       Cookies.set( 'INPUT_USERID', msgContent )
       setCaiMemory( { ssoUserId: msgContent }, true )
     }
-    //<<< End of user id manipulation.
+    //<<< End of user id manipulation. <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     this.setState(
       prevState => ({ messages: concat(prevState.messages, [backendMessage]) }),

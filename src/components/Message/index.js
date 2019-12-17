@@ -11,6 +11,8 @@ import Picture from './Picture'
 import Carousel from './Carousel'
 import QuickReplies from './QuickReplies'
 
+import { I18n } from 'react-redux-i18n'
+
 import './style.scss'
 
 class Message extends Component {
@@ -61,73 +63,77 @@ class Message extends Component {
     }
 
     return (
-      <div
-        className={cx('RecastAppMessageContainer CaiAppMessageContainer', {
-          bot: isBot,
-          user: !isBot,
-        })}
-      >
-        <div className={cx('RecastAppMessage CaiAppMessage', { bot: isBot, user: !isBot })}>
-          {image && (
-            <img
-              className={cx('RecastAppMessage--logo CaiAppMessage--logo', { visible: displayIcon })}
-              src={image}
-              style={{}}
-            />
-          )}
+      <div>
+        { content !== I18n.t('message.forLang&Intent') &&
+          <div
+            className={cx('RecastAppMessageContainer CaiAppMessageContainer', {
+              bot: isBot,
+              user: !isBot,
+            })}
+          >
+            <div className={cx('RecastAppMessage CaiAppMessage', { bot: isBot, user: !isBot })}>
+              {image && (
+                <img
+                  className={cx('RecastAppMessage--logo CaiAppMessage--logo', { visible: displayIcon })}
+                  src={image}
+                  style={{}}
+                />
+              )}
 
-          {type === 'text' && <Text {...messageProps} 
-                                dropFileAccepted={ dropFileAccepted }
-                                dropFileRejected={ dropFileRejected }
-                                dropped={ dropped }
-                                dndFiles={ dndFiles }
-                                dndMessage={ dndMessage } />}
+              {type === 'text' && <Text {...messageProps} 
+                                    dropFileAccepted={ dropFileAccepted }
+                                    dropFileRejected={ dropFileRejected }
+                                    dropped={ dropped }
+                                    dndFiles={ dndFiles }
+                                    dndMessage={ dndMessage } />}
 
-          {type === 'picture' && <Picture {...messageProps} />}
+              {type === 'picture' && <Picture {...messageProps} />}
 
-          {type === 'card' && <Card {...messageProps} sendMessage={sendMessage} />}
+              {type === 'card' && <Card {...messageProps} sendMessage={sendMessage} />}
 
-          {contains(type, ['carousel', 'carouselle']) && (
-            <Carousel {...messageProps} sendMessage={sendMessage} />
-          )}
+              {contains(type, ['carousel', 'carouselle']) && (
+                <Carousel {...messageProps} sendMessage={sendMessage} />
+              )}
 
-          {type === 'list' && <List {...messageProps} sendMessage={sendMessage} />}
+              {type === 'list' && <List {...messageProps} sendMessage={sendMessage} />}
 
-          {type === 'buttons' && <Buttons {...messageProps} sendMessage={sendMessage} />}
+              {type === 'buttons' && <Buttons {...messageProps} sendMessage={sendMessage} />}
 
-          {type === 'quickReplies' && (
-            <QuickReplies
-              {...messageProps}
-              sendMessage={sendMessage}
-              isLastMessage={isLastMessage}
-            />
-          )}
+              {type === 'quickReplies' && (
+                <QuickReplies
+                  {...messageProps}
+                  sendMessage={sendMessage}
+                  isLastMessage={isLastMessage}
+                />
+              )}
 
-          {isBot && showInfo && (
-            <div
-              className='RecastAppMessage--JsonButton CaiAppMessage--JsonButton'
-              onClick={() => {
-                if (onClickShowInfo) {
-                  onClickShowInfo(message)
-                }
-              }}
-            >
-              <img src='https://cdn.cai.tools.sap/website/bot-builder/info.png' />
+              {isBot && showInfo && (
+                <div
+                  className='RecastAppMessage--JsonButton CaiAppMessage--JsonButton'
+                  onClick={() => {
+                    if (onClickShowInfo) {
+                      onClickShowInfo(message)
+                    }
+                  }}
+                >
+                  <img src='https://cdn.cai.tools.sap/website/bot-builder/info.png' />
+                </div>
+              )}
             </div>
-          )}
-        </div>
-        {retry && (
-          <div className={cx('RecastAppMessage--retry CaiAppMessage--retry', { bot: isBot })}>
-            Couldn’t send this message{' '}
-            <span onClick={onRetrySendMessage} className='button'>
-              Try again
-            </span>{' '}
-            |{' '}
-            <span onClick={onCancelSendMessage} className='button'>
-              Cancel
-            </span>
+            {retry && (
+              <div className={cx('RecastAppMessage--retry CaiAppMessage--retry', { bot: isBot })}>
+                Couldn’t send this message{' '}
+                <span onClick={onRetrySendMessage} className='button'>
+                  Try again
+                </span>{' '}
+                |{' '}
+                <span onClick={onCancelSendMessage} className='button'>
+                  Cancel
+                </span>
+              </div>
+            )}
           </div>
-        )}
+        }
       </div>
     )
   }
