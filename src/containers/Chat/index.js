@@ -24,7 +24,7 @@ import Live from 'components/Live'
 import Input from 'components/Input'
 
 import { I18n } from 'react-redux-i18n'
-import Cookies from 'cookies-js'
+import { setInputUserIdCookie } from 'helpers'
 
 import './style.scss'
 
@@ -119,7 +119,11 @@ class Chat extends Component {
       })
     }
 
-    if (show && show !== this.props.show && !this.props.sendMessagePromise && !this._isPolling) {
+    if (show 
+     && show !== this.props.show 
+     && !this.props.sendMessagePromise 
+     && !this._isPolling) 
+    {
       this.doMessagesPolling()
     }
   }
@@ -236,17 +240,28 @@ class Chat extends Component {
     //>>> Start of user id manipulation. >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     const msgContent = attachment.content
     const rePattern = /^[0-9a-zA-Z]*$/
+    let prevMsgContent
+
+    if ( this.props.messages.length > 2 ){
+      if ( this.props.messages[this.props.messages.length - 1].attachment.type === 'text' 
+        && typeof this.props.messages[this.props.messages.length -1 ].attachment.content === 'string' ) 
+      {
+        prevMsgContent = this.props.messages[this.props.messages.length - 1].attachment.content
+      }
+    }
     
-    if ( 
-      this.state.messages.length === 3 
-      && attachment.type === 'text' 
-      && msgContent.length >= 5
-      && msgContent.length <= 10
-      && rePattern.test(msgContent) 
-      )
-    {
-      Cookies.set( 'INPUT_USERID', msgContent )
-      setCaiMemory( { ssoUserId: msgContent }, true )
+    if ( prevMsgContent ){
+      if ( 
+        prevMsgContent.indexOf( I18n.t( 'message.askUserID' ) ) !== -1
+        && attachment.type === 'text' 
+        && msgContent.length >= 5
+        && msgContent.length <= 10
+        && rePattern.test(msgContent) 
+        )
+      {
+        setInputUserIdCookie( msgContent )
+        setCaiMemory( { ssoUserId: msgContent }, true )
+      }
     }
     //<<< End of user id manipulation. <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

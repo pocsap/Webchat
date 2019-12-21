@@ -48,8 +48,21 @@ class App extends Component {
                                            : I18n.t('application.welcome', { headerTitle: preferences.headerTitle })
     const firstMessage = (preferences.welcomeMessage) || firstMessageContetns
 
-    const msgAttachment = { attachment: { type: "text", content: I18n.t( 'message.forLang&Intent' ) } } 
-  
+    let customPayload = {
+      message: {
+        attachment: { 
+          type: "text", 
+          content: I18n.t( 'message.forLang&Intent' )
+        }
+      }
+    }
+
+    // CAI memory setting function is assigned here.
+    if ( ssoUserId ){
+      this.setCaiMemory( { ssoUserId: ssoUserId }, true )
+      customPayload.memoryOptions = { memory: { ssoUserId: ssoUserId }, merge: true }
+    }
+
 
     if (onRef) {
       onRef(this)
@@ -61,23 +74,24 @@ class App extends Component {
 
     if (credentials) {
       Object.assign(payload, credentials)
+      customPayload.chatId = credentials.chatId
+      this.props.postMessage( channelId, token, customPayload )
+
     } else {
       this.props.createConversation(channelId, token).then(({ id, chatId }) => {
         storeCredentialsInCookie(chatId, id, preferences.conversationTimeToLive, channelId)
 
-        const customPayload = { chatId: chatId, message: msgAttachment }
+        customPayload.chatId = chatId
         this.props.postMessage( channelId, token, customPayload )
       })
+      this.props.setFirstMessage(firstMessage)
     }
 
-    this.props.setFirstMessage(firstMessage)
+    // The following statement is commented out, because Webchat gets all previous messages from CAI even if the browser is reloaded.
+    // So the following statement is moved to above and it is called if there is no credentials (Cookie). i.e. The very beginning of this chat.
+    //this.props.setFirstMessage(firstMessage)
 
     this.props.setCredentials(payload)
-
-    // CAI memory setting function is assigned here.
-    if ( ssoUserId ){
-      this.setCaiMemory( { ssoUserId: ssoUserId }, true )
-    }
 
   }
 

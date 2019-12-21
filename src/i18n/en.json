@@ -7,7 +7,8 @@
  	},
  	"message":{
  		"forLang&Intent": "[Auto Transmitted Message] This chat is handled in English based on the browser locale.",
- 		"reset": "Please reset the chat contents."
+ 		"reset": "Please reset the chat contents.",
+ 		"askUserID": "Please tell me your SAP User ID"
  	},
  	"dropArea":{
  		"areaMessage": "Select files by clicking here, or drop files to here directly.",

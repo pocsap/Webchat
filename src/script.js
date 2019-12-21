@@ -9,7 +9,7 @@ import App from 'containers/App'
 import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n'
 import { I18n } from 'react-redux-i18n'
 import translationObjects from './i18n/translationObjects'
-import { base64, convertFW2HW } from 'helpers'
+import { base64, convertFW2HW, getInputUserIdCookie } from 'helpers'
 import Cookies from 'cookies-js'
 
 /*
@@ -40,7 +40,7 @@ const fukudaSso   = "AjExMDAgAA5wb3J0YWw6STAyMTI1OYgAE2Jhc2ljYXV0aGVudGljYXRpb24
 
 // The following setting of cookie is just for testing, this should not be happened for the production environment.
 // The cookie should be set from the beginning in the production environment.
-Cookies.set( ssoCookieID, fukudaSso )
+//Cookies.set( ssoCookieID, fukudaSso )
 
 const 
   decodeSso2_1 = base64.decode(mySapSso2_1),
@@ -53,7 +53,7 @@ const
   fukudaSsoId = decodeFukudaSso.slice(15,22);
 
 //const ssoUserId = Cookies.get( ssoCookieID ) ? base64.decode( Cookies.get( ssoCookieID ) ).slice(15, 22) : "Guest"
-const ssoUserId = Cookies.get( inputUserID ) || ''
+const ssoUserId = getInputUserIdCookie() || ''
 
 // Delete the cookie in order to test many times.
 //Cookies.expire( ssoCookieID )

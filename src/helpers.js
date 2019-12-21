@@ -1,6 +1,7 @@
 import Cookies from 'cookies-js'
 
 const base64list = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
+const inputUserID = 'INPUT_USERID'
 
 export const truncate = (string, length) => {
   if (string.length <= length) {
@@ -32,6 +33,14 @@ export const getCredentialsFromCookie = (channelId) => {
   }
 
   return null
+}
+
+export const setInputUserIdCookie = ( userId ) => {
+  Cookies.set( inputUserID, userId )
+}
+
+export const getInputUserIdCookie = () => {
+  return Cookies.get( inputUserID )
 }
 
 export const base64 = {
