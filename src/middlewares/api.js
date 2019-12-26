@@ -20,7 +20,7 @@ export default store => next => action => {
   
   if ( prefix === 'POST_MESSAGE' ) {
     console.log(`Sending data is "${data.message.attachment.content}".`)
-    if (data.memoryOptions) console.log(`Memory "ssoUserId" is "${data.memoryOptions.memory.ssoUserId}".`)
+    if (data.memoryOptions) console.log(`>>> Memory "ssoUserId" is "${data.memoryOptions.memory.ssoUserId}". <<<`)
   }
 
   // <<<<< END Temporary Logging <<<<<<<<<<<<<<<

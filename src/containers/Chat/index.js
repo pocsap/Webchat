@@ -24,7 +24,7 @@ import Live from 'components/Live'
 import Input from 'components/Input'
 
 import { I18n } from 'react-redux-i18n'
-import { setInputUserIdCookie } from 'helpers'
+import { setInputUserIdCookie, setInputUserIdLocalStorage } from 'helpers'
 
 import './style.scss'
 
@@ -259,7 +259,8 @@ class Chat extends Component {
         && rePattern.test(msgContent) 
         )
       {
-        setInputUserIdCookie( msgContent )
+        //setInputUserIdCookie( msgContent )
+        setInputUserIdLocalStorage( msgContent, this.props.preferences.conversationTimeToLive, channelId )
         setCaiMemory( { ssoUserId: msgContent }, true )
       }
     }

@@ -30,7 +30,10 @@ class Input extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ( nextProps.dateTime !== this.props.dateTime && nextProps.dateTime !== "" ){
+    if ( nextProps.dateTime !== this.props.dateTime 
+      && nextProps.dateTime !== "" 
+      && this.props.dateTime !== "" )
+    {
       this.setState({ value: nextProps.dateTime });
     }
   }

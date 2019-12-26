@@ -9,7 +9,7 @@ import App from 'containers/App'
 import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n'
 import { I18n } from 'react-redux-i18n'
 import translationObjects from './i18n/translationObjects'
-import { base64, convertFW2HW, getInputUserIdCookie } from 'helpers'
+import { base64, convertFW2HW } from 'helpers'
 import Cookies from 'cookies-js'
 
 /*
@@ -53,7 +53,6 @@ const
   fukudaSsoId = decodeFukudaSso.slice(15,22);
 
 //const ssoUserId = Cookies.get( ssoCookieID ) ? base64.decode( Cookies.get( ssoCookieID ) ).slice(15, 22) : "Guest"
-const ssoUserId = getInputUserIdCookie() || ''
 
 // Delete the cookie in order to test many times.
 //Cookies.expire( ssoCookieID )
@@ -79,7 +78,7 @@ if (root && channelId && token) {
   getChannelPreferences(channelId, token).then(preferences => {
     ReactDOM.render(
       <Provider store={store}>
-        <App token={token} channelId={channelId} preferences={preferences} ssoUserId={ssoUserId} browserLocale={browserLocale} />
+        <App token={token} channelId={channelId} preferences={preferences} browserLocale={browserLocale} />
       </Provider>,
       root,
     )

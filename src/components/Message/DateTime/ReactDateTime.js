@@ -32,7 +32,7 @@ class DateTime extends Component {
     this.onChange = this.onChange.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.changeInputValue( this.state.today.format( this.state.dateFormat + ' ' + this.state.timeFormat ) )
   }
 

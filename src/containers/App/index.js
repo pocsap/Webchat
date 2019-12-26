@@ -6,7 +6,7 @@ import Chat from 'containers/Chat'
 import Expander from 'components/Expander'
 import { setFirstMessage, removeAllMessages, postMessage } from 'actions/messages'
 import { setCredentials, createConversation } from 'actions/conversation'
-import { storeCredentialsInCookie, getCredentialsFromCookie } from 'helpers'
+import { storeCredentialsToLocalStorage, getCredentialsFromLocalStorage, getInputUserIdLocalStorage } from 'helpers'
 
 import { I18n } from 'react-redux-i18n'
 
@@ -41,9 +41,11 @@ class App extends Component {
   }
 
   componentDidMount () {
-    const { channelId, token, preferences, noCredentials, onRef, ssoUserId } = this.props
-    const credentials = getCredentialsFromCookie(channelId)
+    const { channelId, token, preferences, noCredentials, onRef } = this.props
+    const credentials = getCredentialsFromLocalStorage(channelId)
     const payload = { channelId, token }
+
+    const ssoUserId = getInputUserIdLocalStorage()
     const firstMessageContetns = ssoUserId ? I18n.t('application.welcomeWithName', { userId: ssoUserId, headerTitle: preferences.headerTitle })
                                            : I18n.t('application.welcome', { headerTitle: preferences.headerTitle })
     const firstMessage = (preferences.welcomeMessage) || firstMessageContetns
@@ -59,8 +61,13 @@ class App extends Component {
 
     // CAI memory setting function is assigned here.
     if ( ssoUserId ){
+      console.log(`>>> ssoUserId is found with the value "${ssoUserId}" <<<`)
       this.setCaiMemory( { ssoUserId: ssoUserId }, true )
       customPayload.memoryOptions = { memory: { ssoUserId: ssoUserId }, merge: true }
+      this.setState( { ssoUserId } )
+    }
+    else {
+      console.log('>>> ssoUserId could not be found <<<')
     }
 
 
@@ -79,10 +86,11 @@ class App extends Component {
 
     } else {
       this.props.createConversation(channelId, token).then(({ id, chatId }) => {
-        storeCredentialsInCookie(chatId, id, preferences.conversationTimeToLive, channelId)
+        storeCredentialsToLocalStorage(chatId, id, preferences.conversationTimeToLive, channelId)
 
         customPayload.chatId = chatId
         this.props.postMessage( channelId, token, customPayload )
+
       })
       this.props.setFirstMessage(firstMessage)
     }
@@ -211,10 +219,9 @@ class App extends Component {
       getLastMessage,
       enableHistoryInput,
       defaultMessageDelay,
-      ssoUserId,
       browserLocale,
     } = this.props
-    const { expanded } = this.state
+    const { expanded, ssoUserId, dateTimeWhenStore } = this.state
 
     return (
       <div className='RecastApp CaiApp'>
