@@ -260,7 +260,7 @@ class Chat extends Component {
         )
       {
         //setInputUserIdCookie( msgContent )
-        setInputUserIdLocalStorage( msgContent, this.props.preferences.conversationTimeToLive, channelId )
+        setInputUserIdLocalStorage( msgContent, channelId )
         setCaiMemory( { ssoUserId: msgContent }, true )
       }
     }

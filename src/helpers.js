@@ -57,8 +57,8 @@ export const getInputUserIdCookie = () => {
   return Cookies.get( INPUT_USER_ID )
 }
 
-export const setInputUserIdLocalStorage = ( userId, timeToLive, channelId ) => {
-  const maxAge = ( timeToLive ) ? 3600 * timeToLive : 0
+export const setInputUserIdLocalStorage = ( userId, channelId ) => {
+  //const maxAge = ( timeToLive ) ? 3600 * timeToLive : 0
 
   if (typeof window.localStorage !== 'undefined') {
     //const expire = maxAge > 0 ? new Date().getTime() + (maxAge * 1000) : 0
