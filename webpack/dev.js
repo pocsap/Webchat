@@ -6,9 +6,9 @@ const env = process.env.NODE_ENV || 'development'
 
 module.exports = {
 
-  entry: [ './src/script.js' ],
+  entry: ['./src/script.js'],
 
-  devtool: 'cheap-module-source-map',
+  devtool: 'cheap-module-eval-source-map',
 
   resolve: {
     modules: ['../src', '../node_modules'].map(p => path.resolve(__dirname, p)),
@@ -41,7 +41,7 @@ module.exports = {
       loader: 'babel-loader',
       exclude: /node-modules/,
       options: {
-        presets: ['@babel/preset-react'],
+        presets: ['@babel/react'],
         cacheDirectory: true,
       },
     }, {

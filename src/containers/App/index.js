@@ -37,7 +37,34 @@ const NO_LOCALSTORAGE_MESSAGE
 )
 class App extends Component {
   state = {
-    expanded: this.props.expanded || false
+    expanded: this.props.expanded || false,
+    isReady: null,
+  }
+  static getDerivedStateFromProps (props, state) {
+    const { isReady, preferences, expanded } = props
+    if (isReady !== state.isReady) {
+      let expanded = null
+
+      switch (preferences.openingType) {
+      case 'always':
+        expanded = true
+        break
+      case 'never':
+        expanded = false
+        break
+      case 'memory':
+        if (typeof window.localStorage !== 'undefined') {
+          expanded = localStorage.getItem('isChatOpen') === 'true'
+        } else {
+          console.log(NO_LOCALSTORAGE_MESSAGE)
+        }
+        break
+      default:
+        break
+      }
+      return { expanded, isReady }
+    }
+    return null
   }
 
   componentDidMount () {
@@ -100,38 +127,6 @@ class App extends Component {
     //this.props.setFirstMessage(firstMessage)
 
     this.props.setCredentials(payload)
-
-  }
-
-  componentWillReceiveProps (nextProps) {
-    const { isReady, preferences, expanded } = nextProps
-
-    if (isReady !== this.props.isReady) {
-      let expanded = null
-
-      switch (preferences.openingType) {
-        case 'always':
-          expanded = true
-          break
-        case 'never':
-          expanded = false
-          break
-        case 'memory':
-          if (typeof window.localStorage !== 'undefined') {
-            expanded = localStorage.getItem('isChatOpen') === 'true'
-          } else {
-            console.log(NO_LOCALSTORAGE_MESSAGE)
-          }
-          break
-        default:
-          break
-      }
-      this.setState({ expanded })
-    }
-
-    if (expanded !== undefined && expanded !== this.state.expanded) {
-      this.setState({ expanded })
-    }
   }
 
   componentDidUpdate (prevState) {

@@ -69,6 +69,19 @@ class Chat extends Component {
     inputHeight: 50, // height of input (default: 50px),
   }
 
+  static getDerivedStateFromProps (props, state) {
+    const { messages, show } = props
+
+    if (props.getLastMessage && messages && messages !== state.messages && messages.length > 0) {
+      props.getLastMessage(messages[messages.length - 1])
+    }
+
+    if (messages !== state.messages || show !== state.show) {
+      return { messages, show }
+    }
+    return null
+  }
+
   componentDidMount () {
     const { sendMessagePromise, show } = this.props
 
@@ -79,8 +92,9 @@ class Chat extends Component {
 
   }
 
-  componentWillReceiveProps (nextProps) {
-    const { messages, show } = nextProps
+  componentDidUpdate ( prevProps, prevState ) {
+    const { messages, show } = this.state
+    const { getLastMessage } = this.props
 
     //>>>>>>>>>> Start of additional function of voice message. >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     let ssu = new SpeechSynthesisUtterance(),
@@ -90,7 +104,7 @@ class Chat extends Component {
 
     // Sometimes it never speak anything suddenly even though the code is executed without error.
     // To avoid this case, make it stop by the following cancel method for just in case. 
-    if ( !ssi.speaking || ssi.pending ) ssi.cancel()
+    //if ( !ssi.speaking || ssi.pending ) ssi.cancel()
     
     // ssu.voice = voices[7] // voices[7]:Google 日本人 ja-JP // If you set this value, the pronunciation became very bad for Japanese.
     switch( this.props.browserLocale ){
@@ -102,28 +116,17 @@ class Chat extends Component {
     }
     
     if ( show && msgObj ){
-      if ( msgObj.isWelcomeMessage || messages !== this.state.messages ){
+      //if ( msgObj.isWelcomeMessage || messages !== prevState.messages ){
+      if ( msgObj.isWelcomeMessage || msgObj !== prevState.messages[ prevState.messages.length - 1 ] ){
         ssu.text = msgObj.attachment.content.title || msgObj.attachment.content
         ssu.text = ssu.text.replace( /\*/g, "" )
+        if ( ssi.speaking ) ssi.cancel()
         ssi.speak(ssu)
       }
     }
     //<<<<<<<<<< End of additional function of voice message. <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-    if (messages !== this.state.messages) {
-      this.setState({ messages }, () => {
-        const { getLastMessage } = this.props
-        if (getLastMessage) {
-          getLastMessage(messages[messages.length - 1])
-        }
-      })
-    }
-
-    if (show 
-     && show !== this.props.show 
-     && !this.props.sendMessagePromise 
-     && !this._isPolling) 
-    {
+    if (show && !this.props.sendMessagePromise && !this._isPolling) {
       this.doMessagesPolling()
     }
   }
@@ -344,7 +347,8 @@ class Chat extends Component {
   }
 
   doMessagesPolling = async () => {
-    if (this._isPolling) {
+    const { conversationId } = this.props
+    if (this._isPolling || !conversationId) {
       return
     }
     this._isPolling = true
@@ -353,7 +357,7 @@ class Chat extends Component {
     let index = 0
 
     do {
-      const { lastMessageId, conversationId, channelId, token } = this.props
+      const { lastMessageId, channelId, token } = this.props
       let shouldWaitXseconds = false
       let timeToSleep = 0
       try {

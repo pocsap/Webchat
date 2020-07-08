@@ -22,6 +22,23 @@ class Input extends Component {
     menuIndexes: [],
   }
 
+  /*
+  static getDerivedStateFromProps ( nextProps, prevState ) {
+
+    // Moved from componentWillReceiveProps with replacing "this.setState" with "return".
+    //!!! "this.props" cannot be used in this method !!!
+    if ( nextProps.dateTime !== this.props.dateTime 
+      && nextProps.dateTime !== "" 
+      && this.props.dateTime !== "" )
+    {
+      return { value: nextProps.dateTime }
+    }
+
+    return null
+    
+  }
+  */
+
   componentDidMount () {
     this._input.focus()
     this._input.value = ''
@@ -29,7 +46,15 @@ class Input extends Component {
     this.onInputHeight()
   }
 
-  componentWillReceiveProps(nextProps) {
+  /* 
+     Warning: componentWillReceiveProps has been renamed, and is not recommended for use.
+     See https://fb.me/react-unsafe-component-lifecycles for details.
+     * Move data fetching code or side effects to componentDidUpdate.
+     * If you're updating state whenever props change, refactor your code to use memoization techniques or move it to static getDerivedStateFromProps. Learn more at: https://fb.me/react-derived-state
+     * Rename componentWillReceiveProps to UNSAFE_componentWillReceiveProps to suppress this warning in non-strict mode. 
+       In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run `npx react-codemod rename-unsafe-lifecycles` in your project source folder
+  */
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if ( nextProps.dateTime !== this.props.dateTime 
       && nextProps.dateTime !== "" 
       && this.props.dateTime !== "" )
@@ -37,6 +62,7 @@ class Input extends Component {
       this.setState({ value: nextProps.dateTime });
     }
   }
+  
 
   shouldComponentUpdate (nextProps, nextState) {
     return (
@@ -46,7 +72,7 @@ class Input extends Component {
     )
   }
 
-  componentDidUpdate () {
+  componentDidUpdate ( prevProps, prevState ) {
     if (!this.state.value) {
       // Dirty fix textarea placeholder to reset style correctly
       setTimeout(() => {
@@ -57,6 +83,17 @@ class Input extends Component {
     }
 
     this.onInputHeight()
+
+    // Moved from componentWillReceiveProps with changing variant names.
+    /*
+    if ( this.props.dateTime !== prevProps.dateTime 
+      && this.props.dateTime !== "" 
+      && prevProps.dateTime !== "" )
+    {
+      this.setState({ value: this.props.dateTime });
+    }
+    */
+
   }
 
   onInputChange = e => {
