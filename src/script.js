@@ -11,7 +11,7 @@ import App from 'containers/App'
 import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n'
 import { I18n } from 'react-redux-i18n'
 import translationObjects from './i18n/translationObjects'
-import { base64, convertFW2HW } from 'helpers'
+import { base64, convertFW2HW, setInputUserIdLocalStorage } from 'helpers'
 import Cookies from 'cookies-js'
 
 /*
@@ -75,6 +75,9 @@ const script = document.currentScript || document.getElementById('cai-webchat')
 
 const channelId = script.getAttribute('channelId')
 const token = script.getAttribute('token')
+
+const sapUserId = script.getAttribute('bname')
+if ( sapUserId ) setInputUserIdLocalStorage( sapUserId, channelId )
 
 if (root && channelId && token) {
   getChannelPreferences(channelId, token).then(preferences => {

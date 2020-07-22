@@ -59,6 +59,8 @@ export const getInputUserIdCookie = () => {
 
 export const setInputUserIdLocalStorage = ( userId, channelId ) => {
   //const maxAge = ( timeToLive ) ? 3600 * timeToLive : 0
+  const msMin = 60000
+  const maxAge = 5 * msMin
 
   if (typeof window.localStorage !== 'undefined') {
     //const expire = maxAge > 0 ? new Date().getTime() + (maxAge * 1000) : 0
@@ -67,7 +69,8 @@ export const setInputUserIdLocalStorage = ( userId, channelId ) => {
 
     if ( localStorageCaiCredential ) {
       const caiCredentialJson = JSON.parse( localStorageCaiCredential )
-      expire = ( caiCredentialJson.expire ) ? caiCredentialJson.expire : 0
+      //expire = ( caiCredentialJson.expire ) ? caiCredentialJson.expire : 0
+      expire = new Date().getTime() + maxAge
     }
     else {
       expire = 0
@@ -75,7 +78,7 @@ export const setInputUserIdLocalStorage = ( userId, channelId ) => {
 
     const localData = { expire, userId }
     localStorage.setItem( INPUT_USER_ID, JSON.stringify( localData ) )
-    console.log(`>>> localStorage data named ${INPUT_USER_ID} is set. <<<`)
+    console.log(`>>> localStorage data named ${INPUT_USER_ID} = ${userId} is set. <<<`)
   }
 }
 
