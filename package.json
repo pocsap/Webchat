@@ -32,7 +32,7 @@
     "markdown-to-jsx": "^6.11.4",
     "moment": "^2.22.2",
     "prop-types": "^15.6.0",
-    "query-string": "^6.2.0",
+    "query-string": "^5.0.1",
     "ramda": "^0.25.0",
     "react": "^16.6.1",
     "react-datetime": "^2.16.2",

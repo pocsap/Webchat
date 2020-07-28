@@ -215,6 +215,7 @@ class App extends Component {
       enableHistoryInput,
       defaultMessageDelay,
       browserLocale,
+      voice
     } = this.props
     const { expanded, ssoUserId, dateTimeWhenStore } = this.state
 
@@ -260,6 +261,7 @@ class App extends Component {
           undefineWebchatMethod={this.undefineWebchatMethod}
           ssoUserId={ssoUserId}
           browserLocale={browserLocale}
+          voice={voice}
         />
       </div>
     )

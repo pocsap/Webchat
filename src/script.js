@@ -79,11 +79,13 @@ const token = script.getAttribute('token')
 const sapUserId = script.getAttribute('bname')
 if ( sapUserId ) setInputUserIdLocalStorage( sapUserId, channelId )
 
+const voice = script.getAttribute('voice')
+
 if (root && channelId && token) {
   getChannelPreferences(channelId, token).then(preferences => {
     ReactDOM.render(
       <Provider store={store}>
-        <App token={token} channelId={channelId} preferences={preferences} browserLocale={browserLocale} />
+        <App token={token} channelId={channelId} preferences={preferences} browserLocale={browserLocale} voice={voice} />
       </Provider>,
       root,
     )

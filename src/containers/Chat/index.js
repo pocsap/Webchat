@@ -94,34 +94,36 @@ class Chat extends Component {
 
   componentDidUpdate ( prevProps, prevState ) {
     const { messages, show } = this.state
-    const { getLastMessage } = this.props
+    const { getLastMessage, voice } = this.props
 
     //>>>>>>>>>> Start of additional function of voice message. >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    let ssu = new SpeechSynthesisUtterance(),
-        ssi = window.speechSynthesis,
-        voices = ssi.getVoices(),
-        msgObj =  messages[messages.length - 1]
+    if (typeof SpeechSynthesisUtterance == 'function' && voice ){
+      let ssu = new SpeechSynthesisUtterance(),
+          ssi = window.speechSynthesis,
+          voices = ssi.getVoices(),
+          msgObj =  messages[messages.length - 1]
 
-    // Sometimes it never speak anything suddenly even though the code is executed without error.
-    // To avoid this case, make it stop by the following cancel method for just in case. 
-    //if ( !ssi.speaking || ssi.pending ) ssi.cancel()
-    
-    // ssu.voice = voices[7] // voices[7]:Google 日本人 ja-JP // If you set this value, the pronunciation became very bad for Japanese.
-    switch( this.props.browserLocale ){
-      case 'ja':
-        ssu.lang = 'ja-JP';
-        break;
-      case 'en':
-        ssu.lang = 'en-US'
-    }
-    
-    if ( show && msgObj ){
-      //if ( msgObj.isWelcomeMessage || messages !== prevState.messages ){
-      if ( msgObj.isWelcomeMessage || msgObj !== prevState.messages[ prevState.messages.length - 1 ] ){
-        ssu.text = msgObj.attachment.content.title || msgObj.attachment.content
-        ssu.text = ssu.text.replace( /\*/g, "" )
-        if ( ssi.speaking ) ssi.cancel()
-        ssi.speak(ssu)
+      // Sometimes it never speak anything suddenly even though the code is executed without error.
+      // To avoid this case, make it stop by the following cancel method for just in case. 
+      //if ( !ssi.speaking || ssi.pending ) ssi.cancel()
+      
+      // ssu.voice = voices[7] // voices[7]:Google 日本人 ja-JP // If you set this value, the pronunciation became very bad for Japanese.
+      switch( this.props.browserLocale ){
+        case 'ja':
+          ssu.lang = 'ja-JP';
+          break;
+        case 'en':
+          ssu.lang = 'en-US'
+      }
+      
+      if ( show && msgObj ){
+        //if ( msgObj.isWelcomeMessage || messages !== prevState.messages ){
+        if ( msgObj.isWelcomeMessage || msgObj !== prevState.messages[ prevState.messages.length - 1 ] ){
+          ssu.text = msgObj.attachment.content.title || msgObj.attachment.content
+          ssu.text = ssu.text.replace( /\*/g, "" )
+          if ( ssi.speaking ) ssi.cancel()
+          ssi.speak(ssu)
+        }
       }
     }
     //<<<<<<<<<< End of additional function of voice message. <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

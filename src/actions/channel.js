@@ -1,6 +1,9 @@
 import config from '../config'
 import axios from 'axios'
 
+console.log(`>>> config.apiUrl: ${config.apiUrl} <<<`)
+console.log(`>>> config.ownUrl: ${config.ownUrl} <<<`)
+
 export const getChannelPreferences = (channelId, token) => {
   const client = axios.create({
     baseURL: config.apiUrl,
