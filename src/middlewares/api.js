@@ -31,8 +31,8 @@ export default store => next => action => {
   } 
   else {
     //i.e OWN
-    targetUrl = `${config.ownUrl}${url}`
-    console.log(`>>> Target server's URL is ${config.ownUrl}${url}`)
+    targetUrl = `${config.fileUploadBaseUrl}${path}`
+    console.log(`>>> Target server's URL is ${config.fileUploadBaseUrl}${path}`)
 
     data.map( file => {
       fData.append( 'uploadFiles', file )

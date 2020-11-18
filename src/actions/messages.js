@@ -41,7 +41,7 @@ export const addMessageInfo = createAction('ADD_MESSAGE_INFO')
 
 export const dropFileAccept = createAction( 'DROP_FILE_ACCEPTED' )
 export const sendDroppedFiles = createAction( 'OWN:SEND_DROPPED_FILES', ( files, conversationId ) => ({
-  url: '/upload_files',
+  path: '/upload_files',
   method: 'post',
   data: files,
   convId: conversationId,
