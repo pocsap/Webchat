@@ -13,7 +13,7 @@ export default store => next => action => {
 
   const { dispatch } = store
   const prefix = action.type.split(':')[1]
-  const { method = 'get', url, data, headers, query, convId } = action.payload
+  const { method = 'get', url, path, data, headers, query, convId } = action.payload
 
   // >>>>> START Temporary Logging >>>>>>>>>>>>>
   console.log(`API Middleware is called, the action is ${action.type}.`)
